@@ -1,6 +1,6 @@
 # GroceryHandler
 
-#Author
+# Author
   Victor, Datastax intern
 
 IOS app for facilitating the accouting of shared groceries.
