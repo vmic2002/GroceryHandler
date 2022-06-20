@@ -1,3 +1,5 @@
+
+//temp comment
 //
 //  GroceryHandlerApp.swift
 //  GroceryHandler
@@ -51,7 +53,7 @@ func buttonTapped(n:Int) -> String {
     //   printAllOrdersFor(name: "Andy")
     //  print(getSetOfNames())
     //printAllOrdersFor(name: "Andy")
-    //populateDatabase(numNewOrders: 200)
+    populateDatabase(numNewOrders: 200)
     // // print("Average is \(getAverageNumBytesOfDoc())")
     //computeAmountOwed(order: order, dict: &dict)
     //computeAllOrdersFor(name:"Andy")
