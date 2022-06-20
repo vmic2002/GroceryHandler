@@ -1,5 +1,5 @@
 
-//temp comment
+//
 //  GroceryHandlerApp.swift
 //  GroceryHandler
 //
@@ -27,14 +27,16 @@ struct Item : Codable {
 }
 
 struct Order : Codable {
-    let payerName : String
+    let userName : String
+    let password : String
+    //let payerName : String -> use userName instead
     let receipt : [Item]
 }
 
-let names = ["Michael", "Dwight", "Jim", "Pam", "Angela", "Kevin",
-             "Oscar", "Phillys", "Stanley", "Andy", "Toby", "Kelly",
-             "Ryan", "David", "Gabe", "Robert", "Creed", "Roy", "Darryl",
-             "Jan", "Holly", "Mose", "Joe"]
+let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
+             "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
+             "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
+             "Jan1", "Holly1", "Mose1", "Joe1"]
 
 var orders = [Order]()//has to be global because getRequest is async
 var gotOrders = false//same reason as above
@@ -44,35 +46,39 @@ var localDB = [String:Order]()
 func buttonTapped(n:Int) -> String {
     print("tapped")
     
-     //deleteOrdersForName(name: "Michael", numOrders: 2)
+     //deleteOrdersForUserName(userName: "Michael1", numOrders: 2)
   //  let docID = "a4272914-74f0-4379-a60a-cc8a440a58a7"
-    //deleteOrderRequest(docID: docID)
+   // deleteOrderRequest(docID: "52dfd13c-0411-48c2-ab47-68bb09178e2a")
     
-    //deleteOrdersForName(name: "Andy", numOrders: 1)
-    //   printAllOrdersFor(name: "Andy")
+    //deleteOrdersForUserName(userName: "Andy1", numOrders: 9)
+       //printAllOrdersFor(userName: "Michael1")
     //  print(getSetOfNames())
-    //printAllOrdersFor(name: "Andy")
-    populateDatabase(numNewOrders: 200)
+    //printAllOrdersFor(userName: "Andy1")
+    //populateDatabase(numNewOrders: 200)
     // // print("Average is \(getAverageNumBytesOfDoc())")
-    //computeAmountOwed(order: order, dict: &dict)
-    //computeAllOrdersFor(name:"Andy")
-    //printAllOrdersFor(name:"Victor")
-    //printOrders(orders: getOrdersWhereTotalIs(total: 25.2, payerName: "Marie"))
+    //let order = Order(userName: "Andy1", password: "password", receipt: [Item(price: 10, users: ["Andy1", "Michael1"])])
+   //var dict = [String:Double]()
+   // postRequest(order: order)
+  //  computeAmountOwed(order: order, dict: &dict)
+//computeAllOrdersFor(userName:"Andy1")
+    
+    //printAllOrdersFor(userName:"Victor")
+    //printOrders(orders: getOrdersWhereTotalIs(total: 510.045, userName: "Michael1"))
     return "hi"
 }
 
 func populateDatabase(numNewOrders:Int){
     for _ in 0..<numNewOrders{
-        let order = getRandomOrder(names: Array(getRandomSetOfNames()))
+        let order = getRandomOrder(userNames: Array(getRandomSetOfUserNames()))
         postRequest(order: order)
     }
 }
 
 func getAverageNumBytesOfDoc()->Int{
-    let numNewOrders = 50
+    let numNewOrders = 50//arbitrary
     var sum = 0
     for _ in 0..<numNewOrders{
-        let order = getRandomOrder(names: Array(getRandomSetOfNames()))
+        let order = getRandomOrder(userNames: Array(getRandomSetOfUserNames()))
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         guard let uploadData = try? encoder.encode(order) else {
@@ -90,22 +96,21 @@ func getAverageNumBytesOfDoc()->Int{
 }
 
 
-func getRandomSetOfNames()->Set<String>{
-    
-    let numNames = Int.random(in: 2..<names.count/3)
-    var setOfNames = Set<String>()
-    for _ in 0..<numNames {
-        var randInt = Int.random(in: 0..<names.count)
-        while (setOfNames.contains(names[randInt])){
-            randInt = Int.random(in: 0..<names.count)
+func getRandomSetOfUserNames()->Set<String>{
+    let numUserNames = Int.random(in: 2..<userNames.count/3)
+    var setOfUserNames = Set<String>()
+    for _ in 0..<numUserNames {
+        var randInt = Int.random(in: 0..<userNames.count)
+        while (setOfUserNames.contains(userNames[randInt])){
+            randInt = Int.random(in: 0..<userNames.count)
         }
-        setOfNames.insert(names[randInt])
+        setOfUserNames.insert(userNames[randInt])
     }
-    return setOfNames
+    return setOfUserNames
 }
 
-func getOrdersWhereTotalIs(total:Double, payerName:String)->[Order]{
-    let orders1 = getAllOrdersForPayerName(payerName: payerName).orders
+func getOrdersWhereTotalIs(total:Double, userName:String)->[Order]{
+    let orders1 = getAllOrdersForUserName(userName: userName).orders
     var result = [Order]()
     for order in orders1 {
         var sum = 0.0
@@ -119,62 +124,62 @@ func getOrdersWhereTotalIs(total:Double, payerName:String)->[Order]{
     return result
 }
 
-func getRandomOrder(names:[String])->Order{
-    //names has length of at least 2
-    //names shoudl be list of DISTINCT strings
-    //example:names:["Arthur", "Marie", "Victor"]
-    //one of these will be payerName
-    let payerNameIndex = Int.random(in: 0..<names.count)
+func getRandomOrder(userNames:[String])->Order{
+    //userNames has length of at least 2
+    //userNames shoudl be list of DISTINCT strings
+    //example:["Arthur2", "Marie123", "Victor12"]
+    //one of these will be the user who pays
+    let payerNameIndex = Int.random(in: 0..<userNames.count)
     var receipt = [Item]()
     let numItems = Int.random(in: 2...15)//2...15 is arbitrary and small for testing, could make much bigger though
     for _ in 0..<numItems{
-        let numUsers = Int.random(in: 1...names.count)
+        let numUsers = Int.random(in: 1...userNames.count)
         var setOfIndices = Set<Int>()
         for _ in 0..<numUsers {
             //get a name from names randomly
-            var index = Int.random(in: 0..<names.count)
+            var index = Int.random(in: 0..<userNames.count)
             while (setOfIndices.contains(index)){
-                index = Int.random(in: 0..<names.count)
+                index = Int.random(in: 0..<userNames.count)
                 //to prevent repeat names
             }
             setOfIndices.insert(index)
         }
         var users = [String]()
         for i in setOfIndices{
-            users.append(names[i])
+            users.append(userNames[i])
         }
         let price = Double.random(in: 0.5...50.0)
         let priceRounded = round(price*1000)/1000
         let item = Item(price: priceRounded, users: users)//0.5...50.0 is arbitrary
         receipt.append(item)
     }
-    let order = Order(payerName:names[payerNameIndex], receipt:receipt)
+    let order = Order(userName:userNames[payerNameIndex], password: "randompassword", receipt:receipt)//all random orders have the same password
     return order
 }
 
 
-func printAllOrdersFor(name:String){
-    let orders1 = getAllOrdersForPayerName(payerName: name).orders
+func printAllOrdersFor(userName:String){
+    let orders1 = getAllOrdersForUserName(userName: userName).orders
     print("there are \(orders1.count) orders")
     printOrders(orders: orders1)
 }
 
 
 //if user has lots of receipts he wants to compute in one go
-func computeAllOrdersFor(name:String){
-    let orders1 = getAllOrdersForPayerName(payerName: name).orders
+func computeAllOrdersFor(userName:String){
+    let orders1 = getAllOrdersForUserName(userName: userName).orders
     var dict = [String:Double]()
     for order in orders1{
         computeAmountOwed(order: order, dict: &dict)
     }
     for (key,value) in dict{
-        print("\(key) owes \(value) to \(name)")
+        print("\(key) owes \(value) to \(userName)")
     }
 }
 
-func getAllOrdersForPayerName(payerName:String)->(orders: [Order], localDB: [String:Order]) {
-    getRequest(name:payerName, maxNumOrders: 15)
-    //max number of orders to get back is arbitrarily 20
+func getAllOrdersForUserName(userName:String)->(orders: [Order], localDB: [String:Order]) {
+    getRequest(userName:userName, maxNumOrders: 15)
+    //max number of orders to get back is arbitrarily 15
     //if this number is too big we will get a server error
     //orders isnt computed even after getRequest is finished
     //need while loop
@@ -187,8 +192,8 @@ func getAllOrdersForPayerName(payerName:String)->(orders: [Order], localDB: [Str
     var ordersCpy = [Order]()
     var localDBCpy = [String:Order]()
     for (docID, order) in localDB {
-        ordersCpy.append(Order(payerName: order.payerName, receipt: order.receipt))
-        localDBCpy[docID] = Order(payerName: order.payerName, receipt: order.receipt)
+        ordersCpy.append(Order(userName: order.userName, password: order.password, receipt: order.receipt))
+        localDBCpy[docID] = Order(userName: order.userName, password: order.password, receipt: order.receipt)
         //structs are passed as copies
     }
     //reinitialize gotOrders and orders and localDB
@@ -210,7 +215,7 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
     for item in order.receipt{
         let amount = Double(item.price)/Double(item.users.count)
         for user in item.users {
-            if (user != order.payerName){
+            if (user != order.userName){
                 //no need to keep track how much the person paid owes themselves
                 //this is assuming that every person has a different name
                 if (dict[user]==nil){
@@ -220,16 +225,16 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
             }
         }
     }
-    //each user owes dict[user] to order.payerName
-    for (key,value) in dict{
-        print("\(key) owes \(value) to \(order.payerName)")
-    }
+    //each user owes dict[user] to order.userName
+    //for (key,value) in dict{
+   //     print("\(key) owes \(value) to \(order.userName)")
+   // }
     print("end of compute amound owed method")
     //  return dict
 }
 
 func printOrder(order:Order){
-    print("Payer name: \(order.payerName)")
+    print("Payer user name: \(order.userName)")
     //print("Receipt: ")
     for item in order.receipt {
         //print("item price: \(item.price)")
@@ -251,7 +256,7 @@ func printOrders(orders:[Order]){
 
 
 /*
- get all orders where payerName = something
+ get all orders where userName = something
  so that a user can see all past orders
  */
 
@@ -284,8 +289,9 @@ func postRequest(order:Order){
            mimeType == "application/json",
            let data = data,
            let dataString = String(data: data, encoding: .utf8) {
-            //   print ("got data: \(dataString)")
-            print("P")
+            print("POST successful")
+            print ("got data: \(dataString)")
+            
             //dataString is of form:
             /*
              {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
@@ -319,12 +325,12 @@ func deleteOrderRequest(docID:String){
 
 
 
-func deleteOrdersForName(name:String, numOrders:Int){
+func deleteOrdersForUserName(userName:String, numOrders:Int){
     /*
-     get all orders for name and get all their ID
+     get all orders for user name and get all their DOC IDs
      then go through each ID (numOrders amount of times) and delete
      */
-    let localDB = getAllOrdersForPayerName(payerName: name).localDB//to get doc ID because can only delete from database with doc ID (at least from what I know)
+    let localDB = getAllOrdersForUserName(userName: userName).localDB//to get doc ID because can only delete from database with doc ID (at least from what I know)
     var i = 0
     for (docID, _) in localDB {
         if (i>=numOrders) {
@@ -336,11 +342,11 @@ func deleteOrdersForName(name:String, numOrders:Int){
 }
 
 
-func getRequest(name:String, maxNumOrders:Int){
-    //param is name of person to retrieve all orders where "payerName" == name
+func getRequest(userName:String, maxNumOrders:Int){
+    //param is user name of person to retrieve all orders
     //print("in get request method"+">> /namespaces/keyspacename1/collections/orders?where=\\{\"firstname\":\\{\"$eq\":\""+name+"\"\\}\\}")
     // let str = "/namespaces/keyspacename1/collections/orders?where=\\{\"payerName\":\\{\"$eq\":\"\(name)\"\\}\\}"
-    let str = "/namespaces/keyspacename1/collections/orders?where={\"payerName\":{\"$eq\":\"\(name)\"}}&page-size=\(maxNumOrders)"
+    let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=\(maxNumOrders)"
     //print("str is:"+str)
     let request = httpRequest(httpMethod: "GET", endUrl: str)
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
@@ -358,7 +364,7 @@ func getRequest(name:String, maxNumOrders:Int){
            mimeType == "application/json",
            let data = data,
            var dataString = String(data: data, encoding: .utf8) {
-            //   print ("got data: \(dataString)")
+               print ("got data: \(dataString)")
             /*
              JSON data is of the form
              {“data”:
