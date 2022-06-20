@@ -1,6 +1,5 @@
 
 //temp comment
-//
 //  GroceryHandlerApp.swift
 //  GroceryHandler
 //
