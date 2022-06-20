@@ -18,7 +18,8 @@ func createAccount(userName:String, password:String){
     postRequest(userInfo: UserInfo(userName: userName, password: password))
 }
 
-//for a user to delete account
+//for a user to delete account, this method should be called if user inputs
+//correct password first
 func deleteAccount(userName:String){
     //get user info and doc id from astra db
     let localUserInfoDB = getUserInfoForUserName(userName: userName)
