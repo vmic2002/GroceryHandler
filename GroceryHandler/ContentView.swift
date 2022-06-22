@@ -32,7 +32,7 @@ struct ContentView: View {
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .onSubmit(){
-                            print("SIGNING IN with \(username) and \(password)")
+                            //print("SIGNING IN with \(username) and \(password)")
                             shared.errorMessage = ""
                         }
                     TextField("Password: ", text: $password)
@@ -40,7 +40,7 @@ struct ContentView: View {
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .onSubmit(){
-                            print("SIGNING IN with \(username) and \(password)")
+                            //print("SIGNING IN with \(username) and \(password)")
                             shared.errorMessage = ""
                         }
                 }
@@ -52,6 +52,7 @@ struct ContentView: View {
                 //Text("HI")
                 Text(shared.errorMessage)
                     .padding(.all, 30)
+                    .multilineTextAlignment(.center)
                 NavigationLink(destination: SignedIn(username: username), isActive: $signin) { EmptyView() }
                 Button("Sign in"){
                     if (username.count==0 || password.count==0){
@@ -91,7 +92,9 @@ struct ContentView: View {
                     Button("Populate"){
                         //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                         //populateUserInfoDB()
+                        
                         populateOrdersDB(numNewOrders: 70)
+                        shared.errorMessage = "Populating db with random orders successful"
                     }.padding(.all,20)
                     //Spacer()
                 }

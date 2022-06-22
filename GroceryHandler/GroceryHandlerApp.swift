@@ -23,6 +23,7 @@ struct GroceryHandlerApp: App {
 }
 
 struct Item : Codable {
+    
     let price : Double
     let users : [String]
 }
@@ -39,12 +40,6 @@ struct UserInfo : Codable {
     let password : String
 }
 
-
-let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
-             "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
-             "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
-             "Jan1", "Holly1", "Mose1", "Joe1"]
-
 var orders = [Order]()//has to be global because getRequest is async
 var gotOrders = false//same reason as above
 var localOrderDB = [String:Order]()
@@ -52,7 +47,12 @@ var localOrderDB = [String:Order]()
 var gotUserInfo = false
 var localUserInfoDB = [String:UserInfo]()
 
-var errorMessage:String = "Error message"
+//var errorMessage:String = "Error message"
+
+let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
+             "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
+             "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
+             "Jan1", "Holly1", "Mose1", "Joe1"]
 
 func buttonTapped(n:Int) -> String {
     print("tapped")
@@ -177,6 +177,17 @@ func printUserInfoFor(userName:String){
         print("Username: \(userInfo.userName), Password: \(userInfo.password)")
         //for loop should only iterate once because usernames are unique
     }
+}
+
+//returns an order summary
+func computeAmoundOwed(order:Order)->String{
+    var dict = [String:Double]()
+    computeAmountOwed(order: order, dict: &dict)
+    var result = ""
+    for (key,value) in dict{
+        result+="\(key) owes \(value) to \(order.userName) \n"
+    }
+    return result
 }
 
 func computeAmountOwed(order:Order, dict: inout [String:Double]){

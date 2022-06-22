@@ -365,14 +365,14 @@ func postRequest(uploadData:Data, collection:String){
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-           let _ = String(data: data, encoding: .utf8) {
-           //let dataString = String(data: data, encoding: .utf8) {
+          // let _ = String(data: data, encoding: .utf8) {
+           let dataString = String(data: data, encoding: .utf8) {
             print("POST to \(collection) successful")
             if (collection.elementsEqual("userInfo")){
                 //shared.errorMessage = "Account created successfully"
                 print("Account created successfully")
             }
-            //print ("got data: \(dataString)")
+            print ("got data: \(dataString)")
             
             //dataString is of form:
             /*
