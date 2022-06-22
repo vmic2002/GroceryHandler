@@ -12,7 +12,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var username: String = ""
     @State private var password: String = ""
-    @ObservedObject var errorManager = shared
+    @ObservedObject var errorManager:ErrorManager = shared
     var body: some View {
         VStack{
             Text("Welcome to GroceryHandler")
@@ -31,6 +31,7 @@ struct ContentView: View {
                     .disableAutocorrection(true)
                     .onSubmit(){
                         print("SIGNING IN with \(username) and \(password)")
+                        shared.errorMessage = ""
                     }
                 TextField("Password: ", text: $password)
                     .padding(.all, 20)
@@ -38,6 +39,7 @@ struct ContentView: View {
                     .disableAutocorrection(true)
                     .onSubmit(){
                         print("SIGNING IN with \(username) and \(password)")
+                        shared.errorMessage = ""
                     }
             }
             .frame(height: 199.0)
@@ -48,6 +50,7 @@ struct ContentView: View {
             //Text("HI")
             Text(shared.errorMessage)
                 .padding(.all, 30)
+    
             Button("Sign in"){
                 //make sure username and passowrd are correct then
                 //switch to view where user can take picture, see past orders etc
@@ -70,9 +73,12 @@ struct ContentView: View {
                         shared.errorMessage = "Username and password cannot be empty"
                         return
                     }
-                    print("Deleting account with \(username) and \(password)")
                     deleteAccount(userName: username, password: password)
                 }.padding(.all, 20)
+                Button("populate"){
+                    //populateUserInfoDB()
+                    populateOrdersDB(numNewOrders: 70)
+                }
                 //Spacer()
             }
             Spacer()

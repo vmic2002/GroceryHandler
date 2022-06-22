@@ -15,6 +15,7 @@ class ErrorManager: ObservableObject {
 
 let shared = ErrorManager()
 
+
 //for a user to sign up (create account)
 func createAccount(userName:String, password:String){
     let userInfoDict = getUserInfoForUserName(userName: userName)
@@ -25,12 +26,16 @@ func createAccount(userName:String, password:String){
         return
     }
     postRequest(userInfo: UserInfo(userName: userName, password: password))
+    shared.errorMessage = "Account created successfully"
 }
 
 
-//for a user to delete account, this method should be called if user inputs
-//correct password first
 func deleteAccount(userName:String, password:String){
+    shared.errorMessage = "Deleting acount... Please wait"
+    //BUG!!
+    //change of errormessage not showing up in view because
+    //view gets updated once function is over
+    
     //get user info and doc id from astra db
     let localUserInfoDB = getUserInfoForUserName(userName: userName)
     //returns dict of docID:UserInfo
@@ -41,32 +46,46 @@ func deleteAccount(userName:String, password:String){
         shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
         print("Cannot delete account with username: \(userName) because none exists.")
         return
-    }
+    } 
+    
     for (docID, userInfo) in localUserInfoDB {
         if (userInfo.password==password){
             deleteUserInfoRequest(docID: docID)
-            
         } else {
             shared.errorMessage = "Incorrect password. Cannot delete account."
             print("Incorrect password. Cannot delete account.")
+        
+            return
         }
         //for loop should only iterate once because usernames should be unique
     }
+    
+    
+    //now to delete all orders with this username
+    
+    //deleteOrdersForUserName deletes 20 max orders so we need the while loop to delete all
+    var db = getAllOrdersForUserName(userName: userName).localOrderDB
+    while (!(db.count==0)){
+       print("Deleting orders")
+        for (docID, _) in db {
+            deleteOrderRequest(docID: docID)
+        }
+        db = getAllOrdersForUserName(userName: userName).localOrderDB
+        //deleteOrdersForUserName(userName: userName)//deletes 20 accounts max`
+    }
+    
+    shared.errorMessage = "Account deleted successfully"
+    
 }
 
-func deleteOrdersForUserName(userName:String, numOrders:Int){
+func deleteOrdersForUserName(userName:String){
     /*
      get all orders for username and get all their DOC IDs
-     then go through each ID (numOrders amount of times) and delete
+     then go through each ID and delete
      */
     let localOrderDB = getAllOrdersForUserName(userName: userName).localOrderDB//to get doc ID because can only delete from database with doc ID (at least from what I know)
-    var i = 0
     for (docID, _) in localOrderDB {
-        if (i>=numOrders) {
-            break
-        }
         deleteOrderRequest(docID: docID)
-        i+=1
     }
 }
 
@@ -145,9 +164,8 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
  so that a user can see all past orders
  */
 func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [String:Order]) {
-    getRequestOrders(userName:userName, maxNumOrders: 15)
-    //max number of orders to get back is arbitrarily 15
-    //if this number is too big we will get a server error
+    getRequestOrders(userName:userName, maxNumOrders: 20)
+    //max number of orders to get back is 20 -> max num of docs that can be returned
     //orders isnt computed even after getRequestOrders is finished
     //need while loop
     while gotOrders==false{
@@ -176,13 +194,15 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
     let request = httpRequest(httpMethod: "GET", endUrl: str)
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
         if let error = error {
-            shared.errorMessage = "error: \(error)"
+            //shared.errorMessage = "error: \(error)"
+            
             print (shared.errorMessage)
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            shared.errorMessage = "server error"
+            //shared.errorMessage = "server error"
+            //COMMENTED line above because of bug:Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
             print (shared.errorMessage)
             //print(response)
             return
@@ -335,7 +355,7 @@ func postRequest(uploadData:Data, collection:String){
            //let dataString = String(data: data, encoding: .utf8) {
             print("POST to \(collection) successful")
             if (collection.elementsEqual("userInfo")){
-                shared.errorMessage = "Account created successfully"
+                //shared.errorMessage = "Account created successfully"
                 print("Account created successfully")
             }
             //print ("got data: \(dataString)")
@@ -445,8 +465,9 @@ func deleteRequest(docID:String, collectionID:String){
             print ("server error")
             return
         }
-        shared.errorMessage = "Account deleted successfully"
+       //shared.errorMessage = "Account deleted successfully"
+        //comment line above because of bug: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
     }
     task.resume()
-    print("end of delete doc function")
+    //print("end of delete doc function")
 }
