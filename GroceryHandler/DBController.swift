@@ -8,19 +8,29 @@
 import Foundation
 
 
+class ErrorManager: ObservableObject {
+    //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
+    @Published var errorMessage: String = ""
+}
+
+let shared = ErrorManager()
+
 //for a user to sign up (create account)
 func createAccount(userName:String, password:String){
     let userInfoDict = getUserInfoForUserName(userName: userName)
     if (userInfoDict.count>0){
-        print("Cannot create account with user name: \(userName) because one already exists.")
+       // ContentView.setErrMsg("Cannot create account with username: \(userName) because one already exists.")
+        shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
+        print("Cannot create account with username: \(userName) because one already exists.")
         return
     }
     postRequest(userInfo: UserInfo(userName: userName, password: password))
 }
 
+
 //for a user to delete account, this method should be called if user inputs
 //correct password first
-func deleteAccount(userName:String){
+func deleteAccount(userName:String, password:String){
     //get user info and doc id from astra db
     let localUserInfoDB = getUserInfoForUserName(userName: userName)
     //returns dict of docID:UserInfo
@@ -28,18 +38,25 @@ func deleteAccount(userName:String){
     //for loop DELETES USER INFO
     //WHICH IS DELETING ACCOUNT
     if (localUserInfoDB.count==0){
+        shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
         print("Cannot delete account with username: \(userName) because none exists.")
         return
     }
-    for (docID, _) in localUserInfoDB {
-        deleteUserInfoRequest(docID: docID)
+    for (docID, userInfo) in localUserInfoDB {
+        if (userInfo.password==password){
+            deleteUserInfoRequest(docID: docID)
+            
+        } else {
+            shared.errorMessage = "Incorrect password. Cannot delete account."
+            print("Incorrect password. Cannot delete account.")
+        }
         //for loop should only iterate once because usernames should be unique
     }
 }
 
 func deleteOrdersForUserName(userName:String, numOrders:Int){
     /*
-     get all orders for user name and get all their DOC IDs
+     get all orders for username and get all their DOC IDs
      then go through each ID (numOrders amount of times) and delete
      */
     let localOrderDB = getAllOrdersForUserName(userName: userName).localOrderDB//to get doc ID because can only delete from database with doc ID (at least from what I know)
@@ -159,13 +176,15 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
     let request = httpRequest(httpMethod: "GET", endUrl: str)
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
         if let error = error {
-            print ("error: \(error)")
+            shared.errorMessage = "error: \(error)"
+            print (shared.errorMessage)
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            print ("server error")
-            print(response)
+            shared.errorMessage = "server error"
+            print (shared.errorMessage)
+            //print(response)
             return
         }
         if let mimeType = response.mimeType,
@@ -246,6 +265,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
                     gotOrders = true
                 } else {
                     print("Could not convert to type Data")
+                    shared.errorMessage = "Error occured while fetching from database"
                 }
             } else {
                 typealias Values = [String: UserInfo]
@@ -262,6 +282,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
                     gotUserInfo = true
                 } else {
                     print("Could not convert to type Data")
+                    shared.errorMessage = "Error occured while fetching from database"
                 }
                 
             }
@@ -281,7 +302,7 @@ func getRequestUserInfo(userName:String){
 
 //sets correct values to orders and localOrderDB vars
 func getRequestOrders(userName:String, maxNumOrders:Int){
-    //param is user name of person to retrieve all orders
+    //param is username of person to retrieve all orders
     //print("in get request method"+">> /namespaces/keyspacename1/collections/orders?where=\\{\"firstname\":\\{\"$eq\":\""+name+"\"\\}\\}")
     // let str = "/namespaces/keyspacename1/collections/orders?where=\\{\"payerName\":\\{\"$eq\":\"\(name)\"\\}\\}"
     let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=\(maxNumOrders)"
@@ -297,19 +318,26 @@ func postRequest(uploadData:Data, collection:String){
     let request = httpRequest(httpMethod: "POST", endUrl: "/namespaces/keyspacename1/collections/\(collection)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
+            shared.errorMessage = "error: \(error)"
             print ("error: \(error)")
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
+            shared.errorMessage = "server error"
             print ("server error")
             return
         }
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-           let dataString = String(data: data, encoding: .utf8) {
+           let _ = String(data: data, encoding: .utf8) {
+           //let dataString = String(data: data, encoding: .utf8) {
             print("POST to \(collection) successful")
+            if (collection.elementsEqual("userInfo")){
+                shared.errorMessage = "Account created successfully"
+                print("Account created successfully")
+            }
             //print ("got data: \(dataString)")
             
             //dataString is of form:
@@ -407,14 +435,17 @@ func deleteRequest(docID:String, collectionID:String){
     let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/keyspacename1/collections/\(collectionID)/\(docID)")
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
         if let error = error {
+            shared.errorMessage = "error: \(error)"
             print ("error: \(error)")
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
+            shared.errorMessage = "server error"
             print ("server error")
             return
         }
+        shared.errorMessage = "Account deleted successfully"
     }
     task.resume()
     print("end of delete doc function")
