@@ -15,6 +15,20 @@ class ErrorManager: ObservableObject {
 
 let shared = ErrorManager()
 
+//returns true if user can sign in and false otherwise
+func signIn(userName:String, password:String)->Bool{
+    let dict = getUserInfoForUserName(userName: userName)
+    if (dict.count==0){
+        shared.errorMessage = "There is no account with username \(userName)."
+        return false
+    }
+    if (dict[dict.startIndex].value.password==password){//dict should have only one entry since usernames are unique
+        return true
+    } else {
+        shared.errorMessage = "Incorrect password. Could not sign in."
+        return false
+    }
+}
 
 //for a user to sign up (create account)
 func createAccount(userName:String, password:String){
