@@ -34,13 +34,13 @@ func signIn(userName:String, password:String)->Bool{
 func createAccount(userName:String, password:String){
     let userInfoDict = getUserInfoForUserName(userName: userName)
     if (userInfoDict.count>0){
-       // ContentView.setErrMsg("Cannot create account with username: \(userName) because one already exists.")
+        // ContentView.setErrMsg("Cannot create account with username: \(userName) because one already exists.")
         shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
         print("Cannot create account with username: \(userName) because one already exists.")
         return
     }
     postRequest(userInfo: UserInfo(userName: userName, password: password))
-    shared.errorMessage = "Account created successfully"
+    shared.errorMessage = "Account created successfully."
 }
 
 
@@ -60,7 +60,7 @@ func deleteAccount(userName:String, password:String){
         shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
         print("Cannot delete account with username: \(userName) because none exists.")
         return
-    } 
+    }
     
     for (docID, userInfo) in localUserInfoDB {
         if (userInfo.password==password){
@@ -68,7 +68,7 @@ func deleteAccount(userName:String, password:String){
         } else {
             shared.errorMessage = "Incorrect password. Cannot delete account."
             print("Incorrect password. Cannot delete account.")
-        
+            
             return
         }
         //for loop should only iterate once because usernames should be unique
@@ -80,7 +80,7 @@ func deleteAccount(userName:String, password:String){
     //deleteOrdersForUserName deletes 20 max orders so we need the while loop to delete all
     var db = getAllOrdersForUserName(userName: userName).localOrderDB
     while (!(db.count==0)){
-       print("Deleting orders")
+        print("Deleting orders")
         for (docID, _) in db {
             deleteOrderRequest(docID: docID)
         }
@@ -159,7 +159,7 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     }
     print("there are \(localUserInfoDB.count) user infos with username: \(userName)")
     
-   
+    
     var localUserInfoDBCpy = [String:UserInfo]()
     for (docID, userInfo) in localUserInfoDB {
         
@@ -173,6 +173,37 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     return localUserInfoDBCpy
 }
 
+func getAllOrdersForUserNameAsString(userName:String)->(result:String, numOrders:Int){
+    let pastOrders = getAllOrdersForUserName(userName: userName).orders
+    var result = ""
+    for order in pastOrders {
+        for item in order.receipt {
+            result += "Price: \(item.price) -- Users: "
+             for user in item.users {
+                 result += "\(user) "
+             }
+            result+="\n"
+        }
+        result+="\n-----------------------\n"
+    }
+    print("RESULTTTTT")
+    print(result)
+    return (result, pastOrders.count)
+}
+
+func getOrderAsString(order:Order)->String{
+    var result = ""
+    for item in order.receipt {
+        result += "Price: \(item.price) -- Users: "
+         for user in item.users {
+             result += "\(user) "
+         }
+        result+="\n"
+    }
+    result+="\n-----------------------\n"
+    return result
+}
+
 /*
  get all orders where userName = something in real time
  so that a user can see all past orders
@@ -180,6 +211,12 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
 func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [String:Order]) {
     getRequestOrders(userName:userName, maxNumOrders: 20)
     //max number of orders to get back is 20 -> max num of docs that can be returned
+    //TO GET ALL ORDERS: do get request with page-size size 20
+    //then get operation with page-state = val of page state from first get request
+    //example:
+    //https://29293b22-592c-41b5-8070-ef494732113e-us-east1.apps.astra.datastax.com/api/rest/v2/namespaces/keyspacename1/collections/orders?page-state=JGMyMDljNjI5LTA4ZWQtNGY3Ni1hYjBiLTgzNTc1MjdiY2Q1YwDwf_____B_____
+    
+    
     //orders isnt computed even after getRequestOrders is finished
     //need while loop
     while gotOrders==false{
@@ -225,7 +262,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
            mimeType == "application/json",
            let data = data,
            var dataString = String(data: data, encoding: .utf8) {
-              // print ("got data: \(dataString)")
+            // print ("got data: \(dataString)")
             /*
              JSON data is of the form
              {“data”:
@@ -365,7 +402,7 @@ func postRequest(uploadData:Data, collection:String){
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-          // let _ = String(data: data, encoding: .utf8) {
+           // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
             print("POST to \(collection) successful")
             if (collection.elementsEqual("userInfo")){
@@ -479,7 +516,7 @@ func deleteRequest(docID:String, collectionID:String){
             print ("server error")
             return
         }
-       //shared.errorMessage = "Account deleted successfully"
+        //shared.errorMessage = "Account deleted successfully"
         //comment line above because of bug: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
     }
     task.resume()

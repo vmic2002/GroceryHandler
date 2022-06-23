@@ -26,6 +26,7 @@ struct ContentView: View {
                     .frame(height: 70)
                 Spacer()
                 //instead of spacer could put an image here
+                
                 Form {
                     TextField("Username: ", text: $username)
                         .padding(.all, 20)
@@ -46,6 +47,8 @@ struct ContentView: View {
                 }
                 .frame(height: 199.0)
                 .padding(.bottom, 50)
+                //.moveDisabled(true)
+                //.disabled(true)//to prevent scrolling
                 //.background(Color.white)
                 //Spacer()
                 

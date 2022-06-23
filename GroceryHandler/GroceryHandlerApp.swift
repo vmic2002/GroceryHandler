@@ -206,7 +206,7 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
                 if (dict[user]==nil){
                     dict[user]=0.0
                 }
-                dict[user]!+=Double(amount)
+                dict[user]!+=Double(amount)//truncatetruncate
             }
         }
     }
