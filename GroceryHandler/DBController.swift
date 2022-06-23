@@ -13,9 +13,11 @@ class ErrorManager: ObservableObject {
     @Published var errorMessage: String = ""
 }
 
+
 let shared = ErrorManager()
 
 //returns true if user can sign in and false otherwise
+//is also used to check if user can change password
 func signIn(userName:String, password:String)->Bool{
     let dict = getUserInfoForUserName(userName: userName)
     if (dict.count==0){
@@ -25,7 +27,7 @@ func signIn(userName:String, password:String)->Bool{
     if (dict[dict.startIndex].value.password==password){//dict should have only one entry since usernames are unique
         return true
     } else {
-        shared.errorMessage = "Incorrect password. Could not sign in."
+        shared.errorMessage = "Incorrect password."// Could not sign in."commented because sign in func is also used for changing password
         return false
     }
 }
@@ -381,6 +383,52 @@ func getRequestOrders(userName:String, maxNumOrders:Int){
     getRequest(orderOrUserInfo: true, str: str)
     
 }
+
+//this method is called in ChangePassword view, which means that the user has a valid username
+//and one userInfo
+func changePassword(newPassword:String, userName:String){
+    let dict = getUserInfoForUserName(userName: userName)
+  //  let userInfo = dict[dict.startIndex].value
+    let docID = dict[dict.startIndex].key
+    let newUserInfo = UserInfo(userName:userName, password: newPassword)
+    
+    
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .prettyPrinted
+    guard let uploadData = try? encoder.encode(newUserInfo) else {
+        return
+        //could not convert to type data
+    }  
+    
+    let request = httpRequest(httpMethod: "PUT", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
+    let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+        if let error = error {
+            print ("error: \(error)")
+            return
+        }
+        guard let response = response as? HTTPURLResponse,
+              (200...299).contains(response.statusCode) else {
+            print ("server error")
+            return
+        }
+        if let mimeType = response.mimeType,
+           mimeType == "application/json",
+           let data = data,
+           // let _ = String(data: data, encoding: .utf8) {
+           let dataString = String(data: data, encoding: .utf8) {
+           
+            //print ("got data: \(dataString)")
+            
+            //dataString is of form:
+            /*
+             {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
+             */
+        }
+    }
+    task.resume()
+}
+
+
 
 func postRequest(uploadData:Data, collection:String){
     /*swagger UI link to use *post* a *document* using Document API:

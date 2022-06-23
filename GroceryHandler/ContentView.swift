@@ -13,7 +13,9 @@ struct ContentView: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @ObservedObject var errorManager:ErrorManager = shared
-    @State private var signin = false //https://www.hackingwithswift.com/articles/216/complete-guide-to-navigationview-in-swiftui
+    @State private var signin = false
+    @State private var changePassword = false
+    //https://www.hackingwithswift.com/articles/216/complete-guide-to-navigationview-in-swiftui
     var body: some View {
         NavigationView {
             VStack{
@@ -92,13 +94,25 @@ struct ContentView: View {
                         }
                         deleteAccount(userName: username, password: password)
                     }.padding(.all, 20)
-                    Button("Populate"){
+                    NavigationLink(destination: ChangePassword(username: username), isActive: $changePassword) { EmptyView() }
+                    Button("Change Password"){
+                        if (username.count==0 || password.count==0){
+                            //errorMessage = "Username and password cannot be empty"
+                            shared.errorMessage = "Username and password cannot be empty"
+                            return
+                        }
+                        if (signIn(userName:username, password:password)){
+                            changePassword = true
+                        }
+                        
+                    }.padding(.all,20)
+                    // Button("Populate"){
                         //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                         //populateUserInfoDB()
                         
-                        populateOrdersDB(numNewOrders: 70)
-                        shared.errorMessage = "Populating db with random orders successful"
-                    }.padding(.all,20)
+                     //   populateOrdersDB(numNewOrders: 70)
+                       // shared.errorMessage = "Populating db with random orders successful"
+                    //}.padding(.all,20)
                     //Spacer()
                 }
                 Spacer()
