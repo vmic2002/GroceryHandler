@@ -155,6 +155,8 @@ struct SignedIn: View {
                 items.removeAll()
                 users.removeAll()
                 errMsg = ""
+                orderSummary = ""
+                orderStr = ""
             }
             .foregroundColor(Color.gray)
             .padding(.all, 10)
