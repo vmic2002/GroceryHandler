@@ -42,6 +42,7 @@ struct Order : Codable {
     //let payerName : String -> use userName instead
     let receipt : [Item]
     var paid : Bool
+    let time : String
 }
 
 struct UserInfo : Codable {
@@ -58,6 +59,8 @@ var localUserInfoDB = [String:UserInfo]()
 
 var gotPrices = false
 var prices = [Double]()
+
+
 
 //var errorMessage:String = "Error message"
 
@@ -168,7 +171,7 @@ func getRandomOrder(userNames:[String])->Order{
         let item = Item(price: priceRounded, users: users)//0.5...50.0 is arbitrary
         receipt.append(item)
     }
-    let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false)
+    let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:Date().formatted())
     return order
 }
 
@@ -203,6 +206,10 @@ func computeAmoundOwed(order:Order)->String{
 }
 
 func computeAmountOwed(order:Order, dict: inout [String:Double]){
+    if (order.paid==true){
+        print("Order.paid is true. No need to compute amount owed")
+        return//only compute amount owed for orders that have not been paid
+    }
     //need dictionary of ["user":amountOwed]
     //dont need to count for user that is payerName
     //function could return dictionary

@@ -197,7 +197,7 @@ func getAllOrdersForUserNameAsString(userName:String)->(result:String, numOrders
 }
 
 func getOrderAsString(order:Order)->String{
-    var result = "Paid: \(order.paid)\n"
+    var result = "Paid: \(order.paid), Date: \(order.time)\n"
     for item in order.receipt {
         result += "Price: \(item.price) -- Users: "
          for user in item.users {
@@ -233,8 +233,8 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
     var ordersCpy = [Order]()
     var localOrderDBCpy = [String:Order]()
     for (docID, order) in localOrderDB {
-        ordersCpy.append(Order(userName: order.userName, receipt: order.receipt, paid: order.paid))
-        localOrderDBCpy[docID] = Order(userName: order.userName, receipt: order.receipt, paid: order.paid)
+        ordersCpy.append(Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time))
+        localOrderDBCpy[docID] = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
         //structs are passed as copies
     }
     //reinitialize gotOrders and orders and localOrderDB

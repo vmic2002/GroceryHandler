@@ -142,7 +142,8 @@ struct SignedIn: View {
                     orderStr = ""
                     return
                 }
-                let order = Order(userName: username, receipt: items, paid: false)
+                let order = Order(userName: username, receipt: items, paid: false, time: Date().formatted())
+                //Date().formatted() : 6/27/2022, 1:44 PM
                 postRequest(order: order)
                 errMsg = "Order posted to db"
                 user = ""
