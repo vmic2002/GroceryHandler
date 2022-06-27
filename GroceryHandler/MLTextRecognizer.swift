@@ -17,34 +17,31 @@ func getPrices(image:UIImage)->[Double]{
     
     while gotPrices==false{
         Thread.sleep(forTimeInterval: 1)
-        //after while loop orders will be complete
+        print("still here")
+        //after while loop prices will be complete
     }
     print("got prices became true")
-  //  print("there are \(localUserInfoDB.count) user infos with username: \(userName)")
-    
+    //print("there are \(prices.count) prices")
     
     var pricesCpy = [Double]()
     for price in prices {
         pricesCpy.append(price)
-       // localUserInfoDBCpy[docID] = UserInfo(userName: userInfo.userName, password: userInfo.password)
-        //for loop should iterate just once because usernames are unique
-        //structs are passed as copies
     }
-    //reinitialize gotOrders and orders and localOrderDB
+    //reinitialize gotPrices and prices
     gotPrices = false
     prices = [Double]()
     return pricesCpy
 }
 
 func getPricesAsArray(image:UIImage){
-    var prices = [Double]()
-    print("A")
+ 
+    //print("A")
     let textRecognizer = TextRecognizer.textRecognizer()
-    print("B")
+    //print("B")
     let visionImage = VisionImage(image: image)
-    print("C")
+    //print("C")
     visionImage.orientation = image.imageOrientation
-    print("D")
+    //print("D")
     textRecognizer.process(visionImage) { result, error in
         guard error == nil, let result = result else {
             // Error handling
@@ -73,15 +70,14 @@ func getPricesAsArray(image:UIImage){
                     // let elementFrame = element.frame
                     if let cost = Double(elementText) {
                         print("The user entered a value price of \(cost)")
-                        if (cost>0.0 && cost<300.0){
+                        if (cost>0.0 && cost<300.0){//reasonable price range is in between 0 and 300 (arbitrary)
+                            print("ADDED TO PRICES: \(cost)")
                             prices.append(cost)
                         }
                     } else {
                         print("Not a valid number: \(elementText)")
                     }
-                    
                     //print("ElementText: \(elementText)")
-                    
                 }
             }
             i+=1

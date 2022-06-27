@@ -79,7 +79,10 @@ func deleteAccount(userName:String, password:String){
     
     //now to delete all orders with this username
     
-    //deleteOrdersForUserName deletes 20 max orders so we need the while loop to delete all
+    //IMPORTANT: once getAllOrdersForUserName gets all orders (not just 20) using page-state, code below can be replaced by:
+    //deleteOrdersForUserName(userName:userName)
+    
+    //for now deleteOrdersForUserName deletes 20 max orders so we need the while loop to delete all
     var db = getAllOrdersForUserName(userName: userName).localOrderDB
     while (!(db.count==0)){
         print("Deleting orders")
@@ -194,7 +197,7 @@ func getAllOrdersForUserNameAsString(userName:String)->(result:String, numOrders
 }
 
 func getOrderAsString(order:Order)->String{
-    var result = ""
+    var result = "Paid: \(order.paid)\n"
     for item in order.receipt {
         result += "Price: \(item.price) -- Users: "
          for user in item.users {
@@ -230,8 +233,8 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
     var ordersCpy = [Order]()
     var localOrderDBCpy = [String:Order]()
     for (docID, order) in localOrderDB {
-        ordersCpy.append(Order(userName: order.userName, receipt: order.receipt))
-        localOrderDBCpy[docID] = Order(userName: order.userName, receipt: order.receipt)
+        ordersCpy.append(Order(userName: order.userName, receipt: order.receipt, paid: order.paid))
+        localOrderDBCpy[docID] = Order(userName: order.userName, receipt: order.receipt, paid: order.paid)
         //structs are passed as copies
     }
     //reinitialize gotOrders and orders and localOrderDB
@@ -264,7 +267,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
            mimeType == "application/json",
            let data = data,
            var dataString = String(data: data, encoding: .utf8) {
-            // print ("got data: \(dataString)")
+             print ("got data: \(dataString)")
             /*
              JSON data is of the form
              {“data”:
@@ -314,8 +317,8 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
             let x = dataString.startIndex..<indx
             dataString.removeSubrange(x)
             dataString.removeLast()//to remove last }
-            //  print("dataString should be nicely formatted now")
-            //  print("dataString: \(dataString)")
+              print("dataString should be nicely formatted now")
+              print("dataString: \(dataString)")
             /*
              by now dataString is of form:
              {
@@ -384,23 +387,61 @@ func getRequestOrders(userName:String, maxNumOrders:Int){
     
 }
 
+func setOrderStatusToPaid(docID:String){
+    print("in set status to paid function")
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .prettyPrinted
+    guard let uploadData = try? encoder.encode(Paid(paid:true)) else {
+        return
+        //could not convert to type data
+    }
+    
+    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/orders/\(docID)")
+    let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+        if let error = error {
+            print ("error: \(error)")
+            return
+        }
+        guard let response = response as? HTTPURLResponse,
+              (200...299).contains(response.statusCode) else {
+            print ("server error")
+            return
+        }
+        if let mimeType = response.mimeType,
+           mimeType == "application/json",
+           let data = data,
+           // let _ = String(data: data, encoding: .utf8) {
+           let dataString = String(data: data, encoding: .utf8) {
+           
+            print ("got data: \(dataString)")
+            
+            //dataString is of form:
+            /*
+             {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
+             */
+        }
+    }
+    task.resume()
+}
+
+
 //this method is called in ChangePassword view, which means that the user has a valid username
 //and one userInfo
 func changePassword(newPassword:String, userName:String){
     let dict = getUserInfoForUserName(userName: userName)
   //  let userInfo = dict[dict.startIndex].value
     let docID = dict[dict.startIndex].key
-    let newUserInfo = UserInfo(userName:userName, password: newPassword)
-    
+    //let newUserInfo = UserInfo(userName:userName, password: newPassword)
+    //print("USING PATCH")
     
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
-    guard let uploadData = try? encoder.encode(newUserInfo) else {
+    guard let uploadData = try? encoder.encode(Password(password: newPassword)) else {
         return
         //could not convert to type data
     }  
     
-    let request = httpRequest(httpMethod: "PUT", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
+    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
             print ("error: \(error)")

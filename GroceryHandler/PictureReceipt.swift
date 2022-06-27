@@ -56,9 +56,9 @@ struct PictureReceipt: View {
                 }
             NavigationLink(destination: AddUsers(username:username, prices: prices), isActive: $addUsers){EmptyView()}
             Button("Verify Photo"){
-                print("1111111Verify photo clicked")
+                //print("1111111Verify photo clicked")
                 prices = getPrices(image:image)
-                print("22222222after get prices method")
+                //print("22222222after get prices method")
                // prices = [1.0, 2.2]
                 //getPricesAsArray(image: image)//COMMENT
                 

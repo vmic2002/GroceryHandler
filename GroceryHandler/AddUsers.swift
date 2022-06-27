@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct AddUsers: View {
-    //if the user is in this view, he has logged in and provided a picture of a receipt
+    //if the user is in this view, he has logged in and provided a picture of a receipt, which the ML function has taken and returned an array of prices
+    //the app should ask the user to input list of users (this will be the columns
+    //the app will let the user add/remove(since ML isnt perfect) a price (a price takes up a row)
+    //there would be 2d array of checkboxed where each axis is the prices and the users
     
     @State var username:String
     @State var prices:[Double]

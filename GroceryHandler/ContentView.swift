@@ -106,12 +106,13 @@ struct ContentView: View {
                         }
                         
                     }.padding(.all,20)
-                    // Button("Populate"){
+                    
+                  //   Button("Populate 100"){
                         //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                         //populateUserInfoDB()
                         
-                     //   populateOrdersDB(numNewOrders: 70)
-                       // shared.errorMessage = "Populating db with random orders successful"
+                     //
+                      //  shared.errorMessage = "Populating db with random orders successful"
                     //}.padding(.all,20)
                     //Spacer()
                 }

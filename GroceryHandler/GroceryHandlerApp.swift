@@ -28,12 +28,20 @@ struct Item : Codable {
     let price : Double
     let users : [String]
 }
+//structs used to PATCH -> change paid status or change password
+struct Paid :Codable {
+    var paid :Bool
+}
+struct Password: Codable{
+    var password:String
+}
 
 struct Order : Codable {
     let userName : String
    // let password : String
     //let payerName : String -> use userName instead
     let receipt : [Item]
+    var paid : Bool
 }
 
 struct UserInfo : Codable {
@@ -160,7 +168,7 @@ func getRandomOrder(userNames:[String])->Order{
         let item = Item(price: priceRounded, users: users)//0.5...50.0 is arbitrary
         receipt.append(item)
     }
-    let order = Order(userName:userNames[payerNameIndex], receipt:receipt)
+    let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false)
     return order
 }
 
