@@ -48,6 +48,9 @@ var localOrderDB = [String:Order]()
 var gotUserInfo = false
 var localUserInfoDB = [String:UserInfo]()
 
+var gotPrices = false
+var prices = [Double]()
+
 //var errorMessage:String = "Error message"
 
 let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",

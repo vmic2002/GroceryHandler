@@ -16,6 +16,10 @@
 		A44504A5285BB55B00360165 /* TakePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44504A4285BB55B00360165 /* TakePicture.swift */; };
 		A464C30D2867740D002D2B74 /* GroceryHandlerTests in Resources */ = {isa = PBXBuildFile; fileRef = A464C30B2867740D002D2B74 /* GroceryHandlerTests */; };
 		A464C30E2867740D002D2B74 /* GroceryHandlerUITests in Resources */ = {isa = PBXBuildFile; fileRef = A464C30C2867740D002D2B74 /* GroceryHandlerUITests */; };
+		A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC10286A053800BDCA18 /* PictureReceipt.swift */; };
+		A471DC13286A06E300BDCA18 /* PictureReceiptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */; };
+		A471DC15286A0A4600BDCA18 /* AddUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC14286A0A4600BDCA18 /* AddUsers.swift */; };
+		A471DC17286A0B2600BDCA18 /* MLTextRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC16286A0B2600BDCA18 /* MLTextRecognizer.swift */; };
 		A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */; };
 		A4A63C43285791D1001EE632 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C42285791D1001EE632 /* ContentView.swift */; };
 		A4A63C45285791D5001EE632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A63C44285791D5001EE632 /* Assets.xcassets */; };
@@ -56,9 +60,13 @@
 		A44504A4285BB55B00360165 /* TakePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePicture.swift; sourceTree = "<group>"; };
 		A464C30B2867740D002D2B74 /* GroceryHandlerTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GroceryHandlerTests; sourceTree = "<group>"; };
 		A464C30C2867740D002D2B74 /* GroceryHandlerUITests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GroceryHandlerUITests; sourceTree = "<group>"; };
-		A464C31328677635002D2B74 /* GroceryHandler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = GroceryHandler.app; path = "/Users/victor.micha/DatastaxInternship/DatastaxInternProject/GroceryHandler/build/Debug-iphoneos/GroceryHandler.app"; sourceTree = "<absolute>"; };
-		A464C31428677635002D2B74 /* GroceryHandlerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = GroceryHandlerTests.xctest; path = "/Users/victor.micha/DatastaxInternship/DatastaxInternProject/GroceryHandler/build/Debug-iphoneos/GroceryHandlerTests.xctest"; sourceTree = "<absolute>"; };
-		A464C31528677635002D2B74 /* GroceryHandlerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = GroceryHandlerUITests.xctest; path = "/Users/victor.micha/DatastaxInternship/DatastaxInternProject/GroceryHandler/build/Debug-iphoneos/GroceryHandlerUITests.xctest"; sourceTree = "<absolute>"; };
+		A471DC0D286A041500BDCA18 /* GroceryHandler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryHandler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A471DC0E286A041500BDCA18 /* GroceryHandlerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroceryHandlerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A471DC0F286A041500BDCA18 /* GroceryHandlerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroceryHandlerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A471DC10286A053800BDCA18 /* PictureReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureReceipt.swift; sourceTree = "<group>"; };
+		A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureReceiptHelper.swift; sourceTree = "<group>"; };
+		A471DC14286A0A4600BDCA18 /* AddUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUsers.swift; sourceTree = "<group>"; };
+		A471DC16286A0B2600BDCA18 /* MLTextRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLTextRecognizer.swift; sourceTree = "<group>"; };
 		A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryHandlerApp.swift; sourceTree = "<group>"; };
 		A4A63C42285791D1001EE632 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A4A63C44285791D5001EE632 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -127,6 +135,9 @@
 				A4A63C3F285791D1001EE632 /* GroceryHandler */,
 				8D0007DD7BA71598E1A9862C /* Pods */,
 				8A011208E64DC8446BF0F76A /* Frameworks */,
+				A471DC0D286A041500BDCA18 /* GroceryHandler.app */,
+				A471DC0E286A041500BDCA18 /* GroceryHandlerTests.xctest */,
+				A471DC0F286A041500BDCA18 /* GroceryHandlerUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +153,10 @@
 				A4A63C44285791D5001EE632 /* Assets.xcassets */,
 				A4107DC42867711F00385DFF /* Preview Content */,
 				A44504A4285BB55B00360165 /* TakePicture.swift */,
+				A471DC10286A053800BDCA18 /* PictureReceipt.swift */,
+				A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */,
+				A471DC14286A0A4600BDCA18 /* AddUsers.swift */,
+				A471DC16286A0B2600BDCA18 /* MLTextRecognizer.swift */,
 			);
 			path = GroceryHandler;
 			sourceTree = "<group>";
@@ -169,7 +184,7 @@
 				A4A63C6F2857B4C4001EE632 /* FirebaseAnalytics */,
 			);
 			productName = GroceryHandler;
-			productReference = A464C31328677635002D2B74 /* GroceryHandler.app */;
+			productReference = A471DC0D286A041500BDCA18 /* GroceryHandler.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A4A63C4C285791D5001EE632 /* GroceryHandlerTests */ = {
@@ -188,7 +203,7 @@
 			);
 			name = GroceryHandlerTests;
 			productName = GroceryHandlerTests;
-			productReference = A464C31428677635002D2B74 /* GroceryHandlerTests.xctest */;
+			productReference = A471DC0E286A041500BDCA18 /* GroceryHandlerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A4A63C56285791D5001EE632 /* GroceryHandlerUITests */ = {
@@ -209,7 +224,7 @@
 			);
 			name = GroceryHandlerUITests;
 			productName = GroceryHandlerUITests;
-			productReference = A464C31528677635002D2B74 /* GroceryHandlerUITests.xctest */;
+			productReference = A471DC0F286A041500BDCA18 /* GroceryHandlerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -429,12 +444,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4107DC3286770D700385DFF /* SignedIn.swift in Sources */,
+				A471DC13286A06E300BDCA18 /* PictureReceiptHelper.swift in Sources */,
 				A4107DC1286770CB00385DFF /* PastOrders.swift in Sources */,
+				A471DC17286A0B2600BDCA18 /* MLTextRecognizer.swift in Sources */,
 				A4107DBD286770AE00385DFF /* ChangePassword.swift in Sources */,
 				A4A63C43285791D1001EE632 /* ContentView.swift in Sources */,
 				A44504A5285BB55B00360165 /* TakePicture.swift in Sources */,
+				A471DC15286A0A4600BDCA18 /* AddUsers.swift in Sources */,
 				A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */,
 				A4107DBF286770C000385DFF /* DBController.swift in Sources */,
+				A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

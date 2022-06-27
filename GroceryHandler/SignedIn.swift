@@ -19,10 +19,13 @@ struct SignedIn: View {
     @State private var orderSummary = ""
     @State private var orderStr = ""
     @State private var pastOrders = false
+    @State private var pictureReceipt = false
     var body: some View {
         //Text("In Signed In VIEW \(username)")
         // NavigationView{
+      
         VStack{
+            NavigationLink(destination: PictureReceipt(username:username), isActive: $pictureReceipt){EmptyView()}
             Text("Hello, \(username)")
                 .font(.title)
                 .foregroundColor(Color.green)
@@ -99,13 +102,15 @@ struct SignedIn: View {
                     }
                     .padding(.all, 10)
                 }
+                
                 HStack{
                     Spacer()
                     Button("Take picture of receipt instead"){
                         //GO TO NEW VIEW WHERE TAKING PICTURE WITH CAMERA AND ML IS DONE to get prices
                         //WILL ALSO HAVE TO ASK USER WHO USED WHAT PRODUCT to get users
                         //then post order/compute
-                        errMsg = "Coming soon!"
+                      //  errMsg = "Coming soon!"
+                        pictureReceipt = true
                     }
                     Spacer()
                 }.frame(height:60)
