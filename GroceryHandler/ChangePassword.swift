@@ -11,6 +11,7 @@ struct ChangePassword: View {
     @State var username:String
     @State var errMsg = ""
     @State var newPassword:String = ""
+    @State var errColor = Color.red
     var body: some View {
         VStack{
             Text("Hey \(username)!")
@@ -21,20 +22,21 @@ struct ChangePassword: View {
             Text(errMsg)
                 .font(.body)
                 .multilineTextAlignment(.center)
-                .foregroundColor(Color.green)
+                .foregroundColor(errColor)
             TextField("New password here", text: $newPassword)
                 .textFieldStyle(CustomTextField())
             HStack{
                 Spacer()
                 Button("Change Password"){
                     if (newPassword.count==0){
+                        errColor = Color.red
                         errMsg = "New password cannot be empty"
                         return
                     }
                     changePassword(newPassword: newPassword, userName: username)
+                    errColor = Color.green
                     errMsg = "Password changed to \(newPassword)"
                     newPassword = ""
-                    //change passowrd here
                 }
                 .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                 .padding(.all, 10)

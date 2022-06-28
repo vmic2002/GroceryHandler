@@ -28,6 +28,9 @@ struct ContentView: View {
                     .padding(.top, 70)
                     .padding(.bottom, 30)
                     .frame(height: 70)
+                //COULD HAVE IMAGE OF LOGO HERE
+                    //.background(Rectangle().stroke(Color.red, lineWidth: 10))
+                        //RoundedRectangle(cornerRadius: 4).stroke())
                 Spacer()
                 //instead of spacer could put an image here
                 
@@ -81,7 +84,7 @@ struct ContentView: View {
                 }//.padding(.all, 20)
                 .multilineTextAlignment(.center)
                 .padding(.all,5)
-                .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.2)))
                 HStack{
                     Button("Create Account"){
                         
@@ -98,6 +101,7 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0.2, green: 0.5, blue: 0.2)))
+                    
                     Button("Delete Account"){
                         if (username.count==0 || password.count==0){
                             //  errorMessage = "Username and password cannot be empty"
@@ -143,7 +147,7 @@ struct ContentView: View {
                     //Spacer()
                 }
                 Spacer()
-            }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
+            }.background(Color(red: 0.96, green: 0.96, blue: 0.86))
         }
     }
 }

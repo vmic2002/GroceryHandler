@@ -16,6 +16,7 @@ struct SignedIn: View {
     //@State private var payer:String = ""
     @State private var price: String = ""
     @State private var errMsg = ""
+    @State private var errColor = Color.red
     @State private var orderSummary = ""
     @State private var orderStr = ""
     @State private var pastOrders = false
@@ -41,7 +42,7 @@ struct SignedIn: View {
                         //.padding(.all, 5)
                         .multilineTextAlignment(.center)
                         .font(.body)
-                        .foregroundColor(Color.red)
+                        .foregroundColor(errColor)
                         .frame(width:280, height:40)
                     Spacer()
                 }
@@ -52,20 +53,24 @@ struct SignedIn: View {
                     Button("Add User"){
                         if (user.count==0){
                             //errorMessage = "Username and password cannot be empty"
+                            errColor = Color.red
                             errMsg = "user cannot be empty"
                             return
                         }
                         //CHECK THAT USER IS A VALID USER NAME AND THAT IT HAS NOT ALREADY BEEN ENTERER IN USERS  TO SET
                         // ADD IT TO USERS SET
                         if (getUserInfoForUserName(userName: user).count==0){
+                            errColor = Color.red
                             errMsg = "no account found for: \(user)"
                             return
                         }
                         if (users.contains(user)){
+                            errColor = Color.red
                             errMsg = "\(user) already added"
                             return
                         }
                         users.insert(user)
+                        errColor = Color.green
                         errMsg = "\(user) added to users"
                     }//.padding(.all, 10)
                     .multilineTextAlignment(.center)
@@ -78,10 +83,12 @@ struct SignedIn: View {
                     Button("Add Item"){
                         if (price.count==0){
                             //errorMessage = "Username and password cannot be empty"
+                            errColor = Color.red
                             errMsg = "Price is empty!"
                             return
                         }
                         if (users.count==0){
+                            errColor = Color.red
                             errMsg = "Num users = 0"
                             return
                         }
@@ -91,12 +98,14 @@ struct SignedIn: View {
                             //errMsg = "The user entered a value pr ice of \(p)"
                             pr = p
                         } else {
+                            errColor = Color.red
                             errMsg = "Not a valid number: \(price)"
                             return
                         }
                         let us = Array(users)
                         items.append(Item(price: pr, users: us))
-                        errMsg = "Added item: price \(pr) and numUsers: \(users.count)"
+                        errColor = Color.green
+                        errMsg = "Added: \(users.count) users and price: \(pr)"
                         user = ""
                         price = ""
                         users.removeAll()
@@ -147,6 +156,7 @@ struct SignedIn: View {
             .frame(width:300, height: 200)
             Button("Post order and view summary"){
                 if (items.isEmpty){
+                    errColor = Color.red
                     errMsg = "No items were added."//An order must have at least 1 item"
                     orderSummary = ""
                     orderStr = ""
@@ -155,6 +165,7 @@ struct SignedIn: View {
                 let order = Order(userName: username, receipt: items, paid: false, time: Date().formatted())
                 //Date().formatted() : 6/27/2022, 1:44 PM
                 postRequest(order: order)
+                errColor = Color.green
                 errMsg = "Order posted to db"
                 user = ""
                 price = ""

@@ -80,6 +80,10 @@ struct CustomButton: ButtonStyle {
             .background(color)
             .foregroundColor(.white)
             .clipShape(Capsule())
+            .animation(.easeOut)
+            //.transition(.move(edge: .trailing))
+            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .shadow(radius: configuration.isPressed ? 40 : 0)
     }
 }
 
@@ -89,7 +93,7 @@ struct CustomTextField: TextFieldStyle {
         configuration
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            .foregroundColor(Color.blue)
+            .foregroundColor(Color(red: 0, green: 0, blue: 0.2))
         // .textFieldStyle(.roundedBorder)
             .padding(10)
             .overlay(//https://stackoverflow.com/questions/67132408/i-have-trouble-using-cornerradius-and-borders-on-a-textfield-in-swiftui
