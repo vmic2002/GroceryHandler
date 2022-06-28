@@ -22,18 +22,25 @@ struct PictureReceipt: View {
                 .font(.title)
                 .foregroundColor(Color.green)
                 .multilineTextAlignment(.center)
-            Text("Choose photo from library")
-                .font(.headline)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                .cornerRadius(16)
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .onTapGesture {
-                    cameraOrLibrary = false
-                    showSheet = true
-                }
+            Button("Choose photo from library"){
+                cameraOrLibrary = false
+                showSheet = true
+            }
+            .multilineTextAlignment(.center)
+            .padding(.all,5)
+            .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+            //Text("Choose photo from library")
+            //  .font(.headline)
+            //  .frame(maxWidth: .infinity)
+            //  .frame(height: 50)
+            //.background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+            ///  .cornerRadius(16)
+            // .foregroundColor(.white)//
+            // .padding(.horizontal, 20)
+            //  .onTapGesture {
+            //      cameraOrLibrary = false
+            //      showSheet = true
+            // }
             Image(uiImage: self.image)
                 .resizable()
                 .cornerRadius(50)
@@ -42,24 +49,31 @@ struct PictureReceipt: View {
                 .aspectRatio(contentMode: .fill)
             //.clipShape(Circle())
             
-            Text("Take photo")
-                .font(.headline)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-                .cornerRadius(16)
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .onTapGesture {
-                    cameraOrLibrary = true
-                    showSheet = true
-                }
+            //Text("Take photo")
+            Button("Take photo"){
+                cameraOrLibrary = true
+                showSheet = true
+            }
+            .multilineTextAlignment(.center)
+            .padding(.all,5)
+            .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+            // .font(.headline)
+            //.frame(maxWidth: .infinity)
+            // .frame(height: 50)
+            //  .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
+            //  .cornerRadius(16)
+            //  .foregroundColor(.white)
+            //  .padding(.horizontal, 20)
+            // .onTapGesture {
+            //      cameraOrLibrary = true
+            //     showSheet = true
+            //  }
             NavigationLink(destination: AddUsers(username:username, prices: prices), isActive: $addUsers){EmptyView()}
             Button("Verify Photo"){
                 //print("1111111Verify photo clicked")
                 prices = getPrices(image:image)
                 //print("22222222after get prices method")
-               // prices = [1.0, 2.2]
+                // prices = [1.0, 2.2]
                 //getPricesAsArray(image: image)//COMMENT
                 
                 addUsers = true
@@ -79,7 +93,7 @@ struct PictureReceipt: View {
             
             //  If you wish to take a photo from camera instead:
             // ImagePicker(sourceType: .camera, selectedImage: self.$image)
-        }
+        }//.background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
 }
 

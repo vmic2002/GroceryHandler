@@ -28,13 +28,7 @@ struct Item : Codable {
     let price : Double
     let users : [String]
 }
-//structs used to PATCH -> change paid status or change password
-struct Paid :Codable {
-    var paid :Bool
-}
-struct Password: Codable{
-    var password:String
-}
+
 
 struct Order : Codable {
     let userName : String
@@ -48,6 +42,14 @@ struct Order : Codable {
 struct UserInfo : Codable {
     let userName : String
     let password : String
+}
+
+//structs used to PATCH -> change paid status or change password
+struct Paid :Codable {
+    var paid :Bool
+}
+struct Password: Codable{
+    var password:String
 }
 
 var orders = [Order]()//has to be global because getRequest is async
@@ -68,6 +70,39 @@ let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
              "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
              "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
              "Jan1", "Holly1", "Mose1", "Joe1"]
+
+//this struct is taken/copied from https://www.hackingwithswift.com/quick-start/swiftui/customizing-button-with-buttonstyle
+struct CustomButton: ButtonStyle {
+    let color:Color
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(color)
+            .foregroundColor(.white)
+            .clipShape(Capsule())
+    }
+}
+
+//this struct is taken/copied from https://www.fivestars.blog/articles/how-to-customize-textfields/
+struct CustomTextField: TextFieldStyle {
+    func _body(configuration: TextField<_Label>) -> some View {
+        configuration
+            .textInputAutocapitalization(.never)
+            .disableAutocorrection(true)
+            .foregroundColor(Color.blue)
+        // .textFieldStyle(.roundedBorder)
+            .padding(10)
+            .overlay(//https://stackoverflow.com/questions/67132408/i-have-trouble-using-cornerradius-and-borders-on-a-textfield-in-swiftui
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(Color.blue, lineWidth: 2)
+            )
+            .padding()
+      }
+}
+
+
+
+
 
 func buttonTapped(n:Int) -> String {
     print("tapped")

@@ -9,11 +9,12 @@ import SwiftUI
 //functional!
 struct PastOrders: View {
     @State var username:String
-    
+   
     var body: some View {
         let orders = getAllOrdersForUserName(userName: username).orders.sorted(by: {
             $0.time.compare($1.time) == .orderedDescending//sorts so that newer orders are at the top
         })
+        //could only get orders that arent paid, or only orders that have been paid using order.paid
         //dont need orders to be @state var because its value wont change in this view
         //if user goes back to signed in and posts an order when he comes back the getallorders fun will be called again so this page will be updated
         VStack{
@@ -22,7 +23,7 @@ struct PastOrders: View {
                 .font(.title)
                 .foregroundColor(Color.gray)
             
-            Form{
+           // VStack{
                 ScrollView{
                     Text("")
                     ForEach(0 ..< orders.count) { value in
@@ -34,8 +35,10 @@ struct PastOrders: View {
                 .font(.body)
                 .frame(height:500)
                 
-            }
+           // }.background(Color.red)
         }
+        
+        .background(Color(red: 0.67, green: 0.87, blue: 0.9))
         
     }
 }

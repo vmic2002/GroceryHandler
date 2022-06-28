@@ -6,11 +6,12 @@
 //
 //handles interaction to astra database
 import Foundation
-
+import SwiftUI
 
 class ErrorManager: ObservableObject {
     //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
     @Published var errorMessage: String = ""
+    @Published var errMsgColor = Color.red
 }
 
 
@@ -21,12 +22,14 @@ let shared = ErrorManager()
 func signIn(userName:String, password:String)->Bool{
     let dict = getUserInfoForUserName(userName: userName)
     if (dict.count==0){
+        shared.errMsgColor = Color.red
         shared.errorMessage = "There is no account with username \(userName)."
         return false
     }
     if (dict[dict.startIndex].value.password==password){//dict should have only one entry since usernames are unique
         return true
     } else {
+        shared.errMsgColor = Color.red
         shared.errorMessage = "Incorrect password."// Could not sign in."commented because sign in func is also used for changing password
         return false
     }
@@ -37,11 +40,13 @@ func createAccount(userName:String, password:String){
     let userInfoDict = getUserInfoForUserName(userName: userName)
     if (userInfoDict.count>0){
         // ContentView.setErrMsg("Cannot create account with username: \(userName) because one already exists.")
+        shared.errMsgColor = Color.red
         shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
         print("Cannot create account with username: \(userName) because one already exists.")
         return
     }
     postRequest(userInfo: UserInfo(userName: userName, password: password))
+    shared.errMsgColor = Color.green
     shared.errorMessage = "Account created successfully."
 }
 
@@ -59,6 +64,7 @@ func deleteAccount(userName:String, password:String){
     //for loop DELETES USER INFO
     //WHICH IS DELETING ACCOUNT
     if (localUserInfoDB.count==0){
+        shared.errMsgColor = Color.red
         shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
         print("Cannot delete account with username: \(userName) because none exists.")
         return
@@ -68,6 +74,7 @@ func deleteAccount(userName:String, password:String){
         if (userInfo.password==password){
             deleteUserInfoRequest(docID: docID)
         } else {
+            shared.errMsgColor = Color.red
             shared.errorMessage = "Incorrect password. Cannot delete account."
             print("Incorrect password. Cannot delete account.")
             
@@ -92,7 +99,7 @@ func deleteAccount(userName:String, password:String){
         db = getAllOrdersForUserName(userName: userName).localOrderDB
         //deleteOrdersForUserName(userName: userName)//deletes 20 accounts max`
     }
-    
+    shared.errMsgColor = Color.green
     shared.errorMessage = "Account deleted successfully"
     
 }

@@ -23,39 +23,39 @@ struct SignedIn: View {
     var body: some View {
         //Text("In Signed In VIEW \(username)")
         // NavigationView{
-      
+        
         VStack{
-            NavigationLink(destination: PictureReceipt(username:username), isActive: $pictureReceipt){EmptyView()}
+            
             Text("Hello, \(username)")
                 .font(.title)
-                .foregroundColor(Color.green)
+                //.foregroundColor(Color.green)
                 .multilineTextAlignment(.center)
-                //.padding(.all, 10)
+                .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
+                //.padding(.top, 10)
             
-            Form{
+           // Form{
+            VStack{
                 HStack{
                     Spacer()
                     Text(errMsg)
-                        .padding(.all, 30)
+                        //.padding(.all, 5)
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .foregroundColor(Color.red)
-                        .frame(width:280, height:50)
+                        .frame(width:280, height:40)
                     Spacer()
                 }
                 .frame(height:50)
                 HStack{
                     TextField("Enter user:", text:$user)
-                        .padding(.all, 20)
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
+                        .textFieldStyle(CustomTextField())
                     Button("Add User"){
                         if (user.count==0){
                             //errorMessage = "Username and password cannot be empty"
                             errMsg = "user cannot be empty"
                             return
                         }
-                        ///CHECK THAT USER IS A VALID USER NAME AND THAT IT HAS NOT ALREADY BEEN ENTERER IN USERS  TO SET
+                        //CHECK THAT USER IS A VALID USER NAME AND THAT IT HAS NOT ALREADY BEEN ENTERER IN USERS  TO SET
                         // ADD IT TO USERS SET
                         if (getUserInfoForUserName(userName: user).count==0){
                             errMsg = "no account found for: \(user)"
@@ -67,13 +67,14 @@ struct SignedIn: View {
                         }
                         users.insert(user)
                         errMsg = "\(user) added to users"
-                    }.padding(.all, 10)
+                    }//.padding(.all, 10)
+                    .multilineTextAlignment(.center)
+                    .padding(.all,5)
+                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                 }
                 HStack{
                     TextField("Enter price:", text:$price)
-                        .padding(.all, 20)
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
+                        .textFieldStyle(CustomTextField())
                     Button("Add Item"){
                         if (price.count==0){
                             //errorMessage = "Username and password cannot be empty"
@@ -99,8 +100,10 @@ struct SignedIn: View {
                         user = ""
                         price = ""
                         users.removeAll()
-                    }
-                    .padding(.all, 10)
+                    }//.padding(.all, 10)
+                    .multilineTextAlignment(.center)
+                    .padding(.all,5)
+                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                 }
                 
                 HStack{
@@ -109,32 +112,39 @@ struct SignedIn: View {
                         //GO TO NEW VIEW WHERE TAKING PICTURE WITH CAMERA AND ML IS DONE to get prices
                         //WILL ALSO HAVE TO ASK USER WHO USED WHAT PRODUCT to get users
                         //then post order/compute
-                      //  errMsg = "Coming soon!"
+                        //  errMsg = "Coming soon!"
                         pictureReceipt = true
                     }
+                    .multilineTextAlignment(.center)
+                    .padding(.all,5)
+                    .buttonStyle(CustomButton(color:Color(red: 0.7, green: 0.2, blue: 0.2)))
                     Spacer()
                 }.frame(height:60)
-                
             }
-            .frame(height: 350)
+          //  }
+           // .frame(height: 350)
             .padding(.bottom, 10)
             
-            NavigationLink(destination: PastOrders(username:username), isActive: $pastOrders){EmptyView()}
+           
             Button("See past orders"){
                 pastOrders = true
             }
-            .padding(.all, 10)
-            .frame(height: 20)
+            //.padding(.all, 10)
+            //.frame(height: 20)
+            .multilineTextAlignment(.center)
+            .padding(.all,5)
+            .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
             ScrollView{
-                Text(orderStr) 
-                   // .padding(.all, 5)
+                Text(orderStr)
+                // .padding(.all, 5)
                     .multilineTextAlignment(.center)
                 Text(orderSummary)
-                   // .padding(.all, 5)
+                // .padding(.all, 5)
                     .multilineTextAlignment(.center)
-                   // .frame(width:320, height:150)
-                    //.lineLimit(30)
+                // .frame(width:320, height:150)
+                //.lineLimit(30)
             }
+            .frame(width:300, height: 200)
             Button("Post order and view summary"){
                 if (items.isEmpty){
                     errMsg = "No items were added."//An order must have at least 1 item"
@@ -153,7 +163,10 @@ struct SignedIn: View {
                 orderSummary = computeAmoundOwed(order: order)
                 orderStr = getOrderAsString(order: order)
                 
-            }.padding(.all, 10)
+            }//.padding(.all, 10)
+            .multilineTextAlignment(.center)
+            .padding(.top,5)
+            .buttonStyle(CustomButton(color:Color(red: 0, green: 0.4, blue: 0.5)))
             Button("Clear all entries"){
                 user = ""
                 //payer = ""
@@ -165,9 +178,11 @@ struct SignedIn: View {
                 orderStr = ""
             }
             .foregroundColor(Color.gray)
-            .padding(.all, 10)
+            .padding(.bottom, 5)
+            NavigationLink(destination: PictureReceipt(username:username), isActive: $pictureReceipt){EmptyView()}
+            NavigationLink(destination: PastOrders(username:username), isActive: $pastOrders){EmptyView()}
         }
-        //   }
+        .background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
 }
 

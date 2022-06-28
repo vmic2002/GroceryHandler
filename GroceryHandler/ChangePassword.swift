@@ -15,7 +15,7 @@ struct ChangePassword: View {
         VStack{
             Text("Hey \(username)!")
                 .font(.title)
-                .foregroundColor(Color.cyan)
+                .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
                 .padding(.top, 70)
             Spacer()
             Text(errMsg)
@@ -23,9 +23,7 @@ struct ChangePassword: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color.green)
             TextField("New password here", text: $newPassword)
-                .padding(.all, 20)
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
+                .textFieldStyle(CustomTextField())
             HStack{
                 Spacer()
                 Button("Change Password"){
@@ -37,11 +35,13 @@ struct ChangePassword: View {
                     errMsg = "Password changed to \(newPassword)"
                     newPassword = ""
                     //change passowrd here
-                }.padding(.top, 10)
+                }
+                .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                .padding(.all, 10)
             }
             Spacer()
             
-        }
+        }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
 }
 
