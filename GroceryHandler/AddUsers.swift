@@ -17,9 +17,14 @@ struct AddUsers: View {
     @State var prices:[Double]
     var body: some View {
         VStack{
-            Text("Hello, \(username)!")
-            Text("Size of prices = \(prices.count)")
+      
+           // Text("Hello, \(username)!")
+          //  Text("Size of prices = \(prices.count)")
+            Text("Coming soon")
+         
         }
+        .background(Color(red: 0.67, green: 0.87, blue: 0.9))
+        .frame(width: 400, height: 650)
     }
 }
 

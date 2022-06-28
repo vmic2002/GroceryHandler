@@ -147,7 +147,8 @@ struct ContentView: View {
                     //Spacer()
                 }
                 Spacer()
-            }.background(Color(red: 0.96, green: 0.96, blue: 0.86))
+            }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
+            //.background(Color(red: 0.96, green: 0.96, blue: 0.86))
         }
     }
 }

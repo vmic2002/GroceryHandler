@@ -20,7 +20,7 @@ struct PictureReceipt: View {
         VStack {
             Text("Hey, \(username)")
                 .font(.title)
-                .foregroundColor(Color.green)
+                .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
                 .multilineTextAlignment(.center)
             Button("Choose photo from library"){
                 cameraOrLibrary = false
@@ -29,18 +29,6 @@ struct PictureReceipt: View {
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-            //Text("Choose photo from library")
-            //  .font(.headline)
-            //  .frame(maxWidth: .infinity)
-            //  .frame(height: 50)
-            //.background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-            ///  .cornerRadius(16)
-            // .foregroundColor(.white)//
-            // .padding(.horizontal, 20)
-            //  .onTapGesture {
-            //      cameraOrLibrary = false
-            //      showSheet = true
-            // }
             Image(uiImage: self.image)
                 .resizable()
                 .cornerRadius(50)
@@ -69,17 +57,18 @@ struct PictureReceipt: View {
             //     showSheet = true
             //  }
             NavigationLink(destination: AddUsers(username:username, prices: prices), isActive: $addUsers){EmptyView()}
-            Button("Verify Photo"){
-                //print("1111111Verify photo clicked")
-                prices = getPrices(image:image)
-                //print("22222222after get prices method")
-                // prices = [1.0, 2.2]
-                //getPricesAsArray(image: image)//COMMENT
-                
+            Button("Get Prices from photo"){
+              
+                //UNCOMMENT BECAUSE OF BUGS
+                //ML HAPPENDS HERE prices = getPrices(image:image)
+               
                 addUsers = true
             }
+            .buttonStyle(CustomButton(color: Color(red: 0.6, green: 0.1, blue: 0.1)))
             .padding(.top, 20)
+            //.multilineTextAlignment(.center)
         }
+        .frame(width: 350, height: 750)
         .padding(.horizontal, 20)
         .sheet(isPresented: $showSheet) {
             // Pick an image from the photo library:
@@ -93,7 +82,8 @@ struct PictureReceipt: View {
             
             //  If you wish to take a photo from camera instead:
             // ImagePicker(sourceType: .camera, selectedImage: self.$image)
-        }//.background(Color(red: 0.67, green: 0.87, blue: 0.9))
+        }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
+        //.background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
 }
 

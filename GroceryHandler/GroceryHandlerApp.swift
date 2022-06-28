@@ -93,8 +93,7 @@ struct CustomTextField: TextFieldStyle {
         configuration
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            .foregroundColor(Color(red: 0, green: 0, blue: 0.2))
-        // .textFieldStyle(.roundedBorder)
+            .foregroundColor(Color(red: 0, green: 0, blue: 0.4))
             .padding(10)
             .overlay(//https://stackoverflow.com/questions/67132408/i-have-trouble-using-cornerradius-and-borders-on-a-textfield-in-swiftui
                 RoundedRectangle(cornerRadius: 14)
@@ -102,11 +101,9 @@ struct CustomTextField: TextFieldStyle {
             )
             .padding()
       }
+    
+    
 }
-
-
-
-
 
 func buttonTapped(n:Int) -> String {
     print("tapped")

@@ -144,7 +144,7 @@ struct SignedIn: View {
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
             ScrollView{
-                Text(orderStr)
+                Text("\n\n\(orderStr)")
                 // .padding(.all, 5)
                     .multilineTextAlignment(.center)
                 Text(orderSummary)
@@ -153,7 +153,11 @@ struct SignedIn: View {
                 // .frame(width:320, height:150)
                 //.lineLimit(30)
             }
+            .background(Color(red: 0.3, green: 0.6, blue: 0.8))//automatically appears/disapears
+            .cornerRadius(15)
             .frame(width:300, height: 200)
+            .font(.callout)
+            .foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.9))
             Button("Post order and view summary"){
                 if (items.isEmpty){
                     errColor = Color.red
