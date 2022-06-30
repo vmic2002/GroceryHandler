@@ -59,6 +59,8 @@ var localOrderDB = [String:Order]()
 var gotUserInfo = false
 var localUserInfoDB = [String:UserInfo]()
 
+var pageState = ""//pageState is initialized as empty on purpose, see getAllOrdersForUserName
+
 var gotPrices = false
 var prices = [Double]()
 

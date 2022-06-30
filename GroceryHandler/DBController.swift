@@ -191,9 +191,9 @@ func getAllOrdersForUserNameAsString(userName:String)->(result:String, numOrders
     for order in pastOrders {
         for item in order.receipt {
             result += "Price: \(item.price) -- Users: "
-             for user in item.users {
-                 result += "\(user) "
-             }
+            for user in item.users {
+                result += "\(user) "
+            }
             result+="\n"
         }
         result+="\n-----------------------\n"
@@ -207,9 +207,9 @@ func getOrderAsString(order:Order)->String{
     var result = "Paid: \(order.paid), Date: \(order.time)\n"
     for item in order.receipt {
         result += "Price: \(item.price) -- Users: "
-         for user in item.users {
-             result += "\(user) "
-         }
+        for user in item.users {
+            result += "\(user) "
+        }
         result+="\n"
     }
     result+="\n-----------------------\n"
@@ -221,13 +221,12 @@ func getOrderAsString(order:Order)->String{
  so that a user can see all past orders
  */
 func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [String:Order]) {
+    var ordersCpy = [Order]()
+    var localOrderDBCpy = [String:Order]()
     getRequestOrders(userName:userName, maxNumOrders: 20)
     //max number of orders to get back is 20 -> max num of docs that can be returned
     //TO GET ALL ORDERS: do get request with page-size size 20
     //then get operation with page-state = val of page state from first get request
-    //example:
-    //https://29293b22-592c-41b5-8070-ef494732113e-us-east1.apps.astra.datastax.com/api/rest/v2/namespaces/keyspacename1/collections/orders?page-state=JGMyMDljNjI5LTA4ZWQtNGY3Ni1hYjBiLTgzNTc1MjdiY2Q1YwDwf_____B_____
-    
     
     //orders isnt computed even after getRequestOrders is finished
     //need while loop
@@ -235,19 +234,46 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
         Thread.sleep(forTimeInterval: 1)
         //after while loop orders will be complete
     }
-    print("there are \(orders.count) orders")
-    // printOrders()
-    var ordersCpy = [Order]()
-    var localOrderDBCpy = [String:Order]()
+    //print("there are \(orders.count) orders")
+    
     for (docID, order) in localOrderDB {
-        ordersCpy.append(Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time))
-        localOrderDBCpy[docID] = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
-        //structs are passed as copies
+        if localOrderDBCpy[docID]==nil {//to prevent duplicate docs
+            let o = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
+            ordersCpy.append(o)
+            localOrderDBCpy[docID] = o
+        }
     }
     //reinitialize gotOrders and orders and localOrderDB
     gotOrders = false
     orders = [Order]()
     localOrderDB.removeAll()
+    if (pageState.isEmpty){
+        return (ordersCpy, localOrderDBCpy)
+    }
+    while (!(pageState.isEmpty)){
+        //print("Pagestate is \(pageState)")
+        let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20&page-state=\(pageState)"
+        pageState = ""//re initialize pageState
+        getRequest(orderOrUserInfo: true, str: str)
+        while gotOrders==false{
+            Thread.sleep(forTimeInterval: 1)
+        }
+        //   print("there are \(orders.count) orders")
+        for (docID, order) in localOrderDB {
+            if localOrderDBCpy[docID]==nil {
+                let o = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
+                ordersCpy.append(o)
+                localOrderDBCpy[docID] = o
+            }
+        }
+        //reinitialize gotOrders and orders and localOrderDB
+        gotOrders = false
+        orders = [Order]()
+        localOrderDB.removeAll()
+    }
+    //dont need to reinitialize pageState to empty string because
+    //if the while loop finished that means it is already empty
+    //print("OrdersCpy.count: \(ordersCpy.count) == localOrderDBCpy.count: \(localOrderDBCpy.count) should be TRUE")
     return (ordersCpy, localOrderDBCpy)
 }
 
@@ -274,7 +300,8 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
            mimeType == "application/json",
            let data = data,
            var dataString = String(data: data, encoding: .utf8) {
-             print ("got data: \(dataString)")
+            //print("IMPORTANT LINE::::::::::::::::::::::::::")
+            // print ("got data: \(dataString)")
             /*
              JSON data is of the form
              {“data”:
@@ -283,7 +310,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
              “docID”:Order
              }
              }
-             OR
+             OR (if there are more docs than page-size or 20)
              {"pageState":"JDZjN2Y5MGQ5LWYyZGItNGRkNS05Mzk3LTZiNDE5NzYzNGMwZQDwf_____B_____","data":{
              
              “docID”: Order,
@@ -293,9 +320,14 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
              */
             //TO SOLVE PROBLEM FIND FIRST OCCURENCE OF DATA, PAGE STATE SHOULD ESSENTIALLY NEVER HAVE WORD DATA IN IT WOUKLD
             //BE VERY UNLUCKY
-            //  let indx = dataString.firstIndex(of: "data")
-            //  dataString.index
-            // let indx = dataString.firstIndex(of: <#T##Character#>)
+            
+            if (orderOrUserInfo==true){//no page state if looking for user info
+                
+                let y = 64//length of page-state
+                if (dataString[dataString.index(dataString.startIndex, offsetBy: 2)]=="p"){
+                    pageState = String(dataString[dataString.index(dataString.startIndex, offsetBy: 14)...dataString.index(dataString.startIndex, offsetBy: 14+y-1)])
+                }
+            }
             
             let str = "data"
             var j = 0
@@ -324,8 +356,9 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
             let x = dataString.startIndex..<indx
             dataString.removeSubrange(x)
             dataString.removeLast()//to remove last }
-              print("dataString should be nicely formatted now")
-              print("dataString: \(dataString)")
+            
+            // print("dataString should be nicely formatted now")
+            // print("dataString: \(dataString)")
             /*
              by now dataString is of form:
              {
@@ -419,7 +452,7 @@ func setOrderStatusToPaid(docID:String){
            let data = data,
            // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
-           
+            
             print ("got data: \(dataString)")
             
             //dataString is of form:
@@ -436,7 +469,7 @@ func setOrderStatusToPaid(docID:String){
 //and one userInfo
 func changePassword(newPassword:String, userName:String){
     let dict = getUserInfoForUserName(userName: userName)
-  //  let userInfo = dict[dict.startIndex].value
+    //  let userInfo = dict[dict.startIndex].value
     let docID = dict[dict.startIndex].key
     //let newUserInfo = UserInfo(userName:userName, password: newPassword)
     //print("USING PATCH")
@@ -446,7 +479,7 @@ func changePassword(newPassword:String, userName:String){
     guard let uploadData = try? encoder.encode(Password(password: newPassword)) else {
         return
         //could not convert to type data
-    }  
+    }
     
     let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
@@ -464,7 +497,7 @@ func changePassword(newPassword:String, userName:String){
            let data = data,
            // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
-           
+            
             //print ("got data: \(dataString)")
             
             //dataString is of form:

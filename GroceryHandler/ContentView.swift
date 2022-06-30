@@ -134,9 +134,9 @@ struct ContentView: View {
                     
                     //  let currDate = Date()
                     //    print(currDate.formatted())
-                    //     populateOrdersDB(numNewOrders: 100)
+                        // populateOrdersDB(numNewOrders: 100)
                     // }
-                    //  .padding(.all, 20)
+                     // .padding(.all, 20)
                     //   Button("Populate 100"){
                     //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                     //populateUserInfoDB()
