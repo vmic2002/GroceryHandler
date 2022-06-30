@@ -22,7 +22,6 @@
 		A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */; };
 		A4A63C43285791D1001EE632 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C42285791D1001EE632 /* ContentView.swift */; };
 		A4A63C45285791D5001EE632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A63C44285791D5001EE632 /* Assets.xcassets */; };
-		A4A63C702857B4C4001EE632 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A4A63C6F2857B4C4001EE632 /* FirebaseAnalytics */; };
 		EF84459DEE1085B1CAC16682 /* Pods_GroceryHandler_GroceryHandlerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6584FAAE603011DD715A785E /* Pods_GroceryHandler_GroceryHandlerUITests.framework */; };
 		F33DA5A7CA68ADF4D1EB735D /* Pods_GroceryHandler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9DC67CA3D2D49B02FD96E6 /* Pods_GroceryHandler.framework */; };
 /* End PBXBuildFile section */
@@ -78,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4A63C702857B4C4001EE632 /* FirebaseAnalytics in Frameworks */,
 				F33DA5A7CA68ADF4D1EB735D /* Pods_GroceryHandler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,7 +176,6 @@
 			);
 			name = GroceryHandler;
 			packageProductDependencies = (
-				A4A63C6F2857B4C4001EE632 /* FirebaseAnalytics */,
 			);
 			productName = GroceryHandler;
 			productReference = A471DC0D286A041500BDCA18 /* GroceryHandler.app */;
@@ -257,7 +254,6 @@
 			);
 			mainGroup = A4A63C34285791D1001EE632;
 			packageReferences = (
-				A4A63C6E2857B4C4001EE632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = A4A63C34285791D1001EE632;
 			projectDirPath = "";
@@ -781,25 +777,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A4A63C6E2857B4C4001EE632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A4A63C6F2857B4C4001EE632 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A4A63C6E2857B4C4001EE632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A4A63C35285791D1001EE632 /* Project object */;
 }
