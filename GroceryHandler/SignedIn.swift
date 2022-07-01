@@ -106,6 +106,16 @@ struct SignedIn: View {
                         items.append(Item(price: pr, users: us))
                         errColor = Color.green
                         errMsg = "Added: \(users.count) users and price: \(pr)"
+                        var temp = "Current Order:\n"
+                        for item in items {
+                            temp += "Price: \(item.price). Users: "
+                            for user in item.users {
+                                temp += "\(user) "
+                            }
+                            temp+="\n"
+                            
+                       }
+                        orderStr = temp
                         user = ""
                         price = ""
                         users.removeAll()
