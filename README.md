@@ -31,7 +31,7 @@ Go to the directory where you would like your project to reside. Clone the proje
 ```bash
 $ git clone https://github.com/vmic2002/GroceryHandler.git
 ```
-This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/vmic2002/GroceryHandler#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/vmic2002/GroceryHandler/edit/master/README.md#if-you-only-want-your-app-to-connect-to-the-astra-db-and-not-use-ml-or-pods-follow-these-steps).
+This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/vmic2002/GroceryHandler#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/vmic2002/GroceryHandler#if-you-only-want-your-app-to-connect-to-the-astra-db-and-not-use-ml-or-pods-follow-these-steps).
 #### Integrate Pods in Project:
 1. In the same window, go to your project directory by running 
 ```bash
