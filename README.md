@@ -13,6 +13,7 @@ This sample app is coded in Swift and was developed on the XCode IDE. It connect
 First, [create a Datastax Astra database account](https://auth.cloud.datastax.com/auth/realms/CloudUsers/protocol/openid-connect/registrations?client_id=auth-proxy&response_type=code&scope=openid+profile+email&redirect_uri=https://astra.datastax.com/welcome&)
 For this sample project, the keyspace is named “keyspacename1” and the DB region is “us-east1”.
 Follow instructions on Astra website to generate an Application Token: 
+![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.44.44%20PM.png)
 Make sure to keep track of these variables: 
 ```
 ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_KEYSPACE, ASTRA_DB_APPLICATION_TOKEN
@@ -42,11 +43,13 @@ $sudo gem install cocoapods
 ```bash
 $vim Podfile
 ```
-Under  # Pods for <APP NAME> add: pod 'GoogleMLKit/TextRecognition','2.2.0' (it should already be there)
+Under  # Pods for APP NAME add: pod 'GoogleMLKit/TextRecognition','2.2.0' (it should already be there)
 To install the Pods directory, Run:
 ```bash
 $pod install
 ```
+
+![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.44.02%20PM.png)
 
 Now the pods are installed and the project will build once opened on XCode!
 
@@ -68,8 +71,10 @@ $rm Podfile
 
 
 Launch the XCode app and select “Open a project or file”
+![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
 Click on the GroceryHandler.xcworkspace file and select Open
+![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.19%20PM.png)
 
 
 
@@ -91,6 +96,7 @@ The httpMethods are “PUT”, “DELETE”, “POST”, “PATCH”, or “GET�
 The endUrl is of the form (depending on the httpMethod): /namespaces/{namespace}/collections/{collection-id}
 
 Now you should create your own collection using Swagger UI:
+![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
 
 The collections for the sample app are named: “userInfo” and “orders”. They are both in the keyspace “keyspacename1”. For your app to connect to your database, make sure to change (in the DBController.swift file) the “userInfo”, “orders”, and “keyspacename1” to whatever you named them.
 
