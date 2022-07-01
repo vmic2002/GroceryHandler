@@ -1,6 +1,6 @@
 # Sample IOS app using Datastax Astra's Document API.
 
-### Author:
+### Contributor:
 [Victor Micha](https://github.com/vmic2002), Datastax Polaris Intern
 
 ### Objective:
