@@ -10,16 +10,17 @@ Build an app in Swift that connects to the Datastax Astra Database
 This sample app is coded in Swift and was developed on the XCode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, etc) as well as shared orders/expenses. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer. It also stores their user information as well as past orders.
 
 ## Prerequisites:
-First, [create a Datastax Astra database account](https://auth.cloud.datastax.com/auth/realms/CloudUsers/protocol/openid-connect/registrations?client_id=auth-proxy&response_type=code&scope=openid+profile+email&redirect_uri=https://astra.datastax.com/welcome&)
+First, [create a Datastax Astra database account](https://auth.cloud.datastax.com/auth/realms/CloudUsers/protocol/openid-connect/registrations?client_id=auth-proxy&response_type=code&scope=openid+profile+email&redirect_uri=https://astra.datastax.com/welcome&).
 For this sample project, the keyspace is named “keyspacename1” and the DB region is “us-east1”.
-Follow instructions on Astra website to generate an Application Token: 
+Follow instructions in the Connect tab of the Astra website to generate an Application Token: 
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.44.44%20PM.png)
 Make sure to keep track of these variables: 
 ```
 ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_KEYSPACE, ASTRA_DB_APPLICATION_TOKEN
 ```
 Next, [Download XCode](
-https://developer.apple.com/xcode/)
+https://developer.apple.com/xcode/).
+
 The XCode version for this application is version 13.4.1.
 
 
@@ -30,44 +31,52 @@ Go to the directory where you would like your project to reside. Clone the proje
 ```bash
 $ git clone https://github.com/vmic2002/GroceryHandler.git
 ```
-This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so to integrate them in your project follow these steps:
-1. Open a terminal window, go to your project directory by running 
+This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/vmic2002/GroceryHandler/edit/master/README.md#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/vmic2002/GroceryHandler/edit/master/README.md#if-you-only-want-your-app-to-connect-to-the-astra-db-and-not-use-ml-or-pods-follow-these-steps).
+#### Integrate Pods in Project:
+1. In the same window, go to your project directory by running 
 ```bash
-$cd GroceryHandler
+$ cd GroceryHandler
 ```
 2. To install CocoaPods, run: 
 ```bash
-$sudo gem install cocoapods
+$ sudo gem install cocoapods
 ```
 3. To edit the Podfile, run:
 ```bash
-$vim Podfile
+$ vim Podfile
 ```
-Under  # Pods for APP NAME add: pod 'GoogleMLKit/TextRecognition','2.2.0' (it should already be there)
-To install the Pods directory, Run:
+Under  
+```
+# Pods for <APP_NAME>
+```
+add (it should already be there):
+```
+pod 'GoogleMLKit/TextRecognition','2.2.0'
+```
+To install the Pods directory, exit the Podfile and run:
 ```bash
-$pod install
+$ pod install
 ```
 
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.44.02%20PM.png)
 
 Now the pods are installed and the project will build once opened on XCode!
 
-If you only want your app to connect to the Astra DB and not use ML or Pods, follow these steps:
+#### If you only want your app to connect to the Astra DB and not use ML or Pods, follow these steps:
 1. After cloning the git repo, go to your project directory by running:
 ```bash
-$cd GroceryHandler
+$ cd GroceryHandler
 ```
 2. Run these commands to remove the pods from the project:
 ```bash
-$sudo gem install cocoapods-deintegrate cocoapods-clean
-$pod deintegrate
-$pod cache clean --all
-$rm Podfile
+$ sudo gem install cocoapods-deintegrate cocoapods-clean
+$ pod deintegrate
+$ pod cache clean --all
+$ rm Podfile
 ```
-3. Make sure to comment out the MLTextRecognizer.swift file because the import statements will cause problems if the Pods were deleted successfully
+3. Make sure to comment out the MLTextRecognizer.swift file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully
 
-!! Whether you chose to remove the Pods or keep them, now follow the following steps. !!
+#### !! Whether you chose to remove the Pods or keep them, now follow the following steps. !!
 
 
 Launch the XCode app and select “Open a project or file”
@@ -93,7 +102,10 @@ func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
 }
 ```
 The httpMethods are “PUT”, “DELETE”, “POST”, “PATCH”, or “GET”
-The endUrl is of the form (depending on the httpMethod): /namespaces/{namespace}/collections/{collection-id}
+The endUrl is of the form (depending on the httpMethod):
+```
+/namespaces/{namespace}/collections/{collection-id}
+```
 
 Now you should create your own collection using Swagger UI:
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
@@ -118,4 +130,5 @@ Check out the [Astra DB documentation](https://docs.datastax.com/en/astra/docs/d
 ### For beginners to databases:
 Make sure to do some research on HTTP requests, URLs, and JSON.
 
-Interested in using the ML in your own app? [Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and look at the MLTextRecognizer.swift file
+### Interested in using the ML in your own app?
+[Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and/or look at the MLTextRecognizer.swift file
