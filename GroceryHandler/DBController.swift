@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+
 class ErrorManager: ObservableObject {
     //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
     @Published var errorMessage: String = ""
@@ -609,13 +610,13 @@ func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
      code for this function is taken/copied from : https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website
      */
     // print("start of httprequest method")
-    let ASTRA_DB_ID = "29293b22-592c-41b5-8070-ef494732113e";
-    let ASTRA_DB_REGION = "us-east1";
-    let token = "AstraCS:mJoYxZFcsmFTSqvKiiHXfGCy:343a2715d03d5c22e435d1da6929c7d7d239c78c1d0d35e2548ba5cf749f0385"
+   // let ASTRA_DB_ID = ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
+   // let ASTRA_DB_REGION = ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
+   // let token = ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
     
     //print("endURL is: "+endUrl)
     // print("https://"+ASTRA_DB_ID+"-"+ASTRA_DB_REGION+".apps.astra.datastax.com/api/rest/v2"+endUrl)
-    let str = "https://"+ASTRA_DB_ID+"-"+ASTRA_DB_REGION+".apps.astra.datastax.com/api/rest/v2"+endUrl
+    let str = "https://"+ASTRA_DB_ID!+"-"+ASTRA_DB_REGION!+".apps.astra.datastax.com/api/rest/v2"+endUrl
     //let url = URL(string: str)!
     let encodedStr = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     // print("encodedStr = \(encodedStr)")
@@ -628,7 +629,7 @@ func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     request.setValue("application/json", forHTTPHeaderField: "accept")
-    request.setValue(token, forHTTPHeaderField: "X-Cassandra-Token")
+    request.setValue(ASTRA_DB_TOKEN!, forHTTPHeaderField: "X-Cassandra-Token")
     // print("end of httprequest method")
     return request
 }

@@ -23,6 +23,18 @@ struct GroceryHandlerApp: App {
     }
 }
 
+//environment variables https://blog.eidinger.info/use-environment-variables-from-env-file-in-a-swift-package
+public var ASTRA_DB_ID:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
+}
+public var ASTRA_DB_REGION:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
+}
+public var ASTRA_DB_TOKEN:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
+}
+
+
 struct Item : Codable {
     
     let price : Double
