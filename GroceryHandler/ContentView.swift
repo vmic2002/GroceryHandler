@@ -15,7 +15,6 @@ struct ContentView: View {
     @ObservedObject var errorManager:ErrorManager = shared
     @State private var signin = false
     @State private var changePassword = false
-  //  @State private var errMsgColor = Color.red
     //https://www.hackingwithswift.com/articles/216/complete-guide-to-navigationview-in-swiftui
     var body: some View {
         NavigationView {

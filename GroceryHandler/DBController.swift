@@ -17,6 +17,16 @@ class ErrorManager: ObservableObject {
 
 let shared = ErrorManager()
 
+class PricesManager: ObservableObject {
+    //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
+    @Published var addUsers: Bool = false
+    @Published var prices = [Double]()
+}
+
+
+let pricesManager = PricesManager()
+
+
 //returns true if user can sign in and false otherwise
 //is also used to check if user can change password
 func signIn(userName:String, password:String)->Bool{
