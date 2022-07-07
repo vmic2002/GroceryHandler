@@ -17,7 +17,7 @@
 		A464C30E2867740D002D2B74 /* GroceryHandlerUITests in Resources */ = {isa = PBXBuildFile; fileRef = A464C30C2867740D002D2B74 /* GroceryHandlerUITests */; };
 		A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC10286A053800BDCA18 /* PictureReceipt.swift */; };
 		A471DC13286A06E300BDCA18 /* PictureReceiptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */; };
-		A471DC15286A0A4600BDCA18 /* AddUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC14286A0A4600BDCA18 /* AddUsers.swift */; };
+		A471DC15286A0A4600BDCA18 /* FinalizePrices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC14286A0A4600BDCA18 /* FinalizePrices.swift */; };
 		A471DC17286A0B2600BDCA18 /* MLTextRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC16286A0B2600BDCA18 /* MLTextRecognizer.swift */; };
 		A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */; };
 		A4A63C43285791D1001EE632 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C42285791D1001EE632 /* ContentView.swift */; };
@@ -62,7 +62,7 @@
 		A471DC0F286A041500BDCA18 /* GroceryHandlerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroceryHandlerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A471DC10286A053800BDCA18 /* PictureReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureReceipt.swift; sourceTree = "<group>"; };
 		A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureReceiptHelper.swift; sourceTree = "<group>"; };
-		A471DC14286A0A4600BDCA18 /* AddUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUsers.swift; sourceTree = "<group>"; };
+		A471DC14286A0A4600BDCA18 /* FinalizePrices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalizePrices.swift; sourceTree = "<group>"; };
 		A471DC16286A0B2600BDCA18 /* MLTextRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLTextRecognizer.swift; sourceTree = "<group>"; };
 		A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryHandlerApp.swift; sourceTree = "<group>"; };
 		A4A63C42285791D1001EE632 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				A4107DC42867711F00385DFF /* Preview Content */,
-				A471DC14286A0A4600BDCA18 /* AddUsers.swift */,
+				A471DC14286A0A4600BDCA18 /* FinalizePrices.swift */,
 				A4107DBC286770AE00385DFF /* ChangePassword.swift */,
 				A4A63C42285791D1001EE632 /* ContentView.swift */,
 				A4107DBE286770C000385DFF /* DBController.swift */,
@@ -442,7 +442,7 @@
 				A471DC17286A0B2600BDCA18 /* MLTextRecognizer.swift in Sources */,
 				A4107DBD286770AE00385DFF /* ChangePassword.swift in Sources */,
 				A4A63C43285791D1001EE632 /* ContentView.swift in Sources */,
-				A471DC15286A0A4600BDCA18 /* AddUsers.swift in Sources */,
+				A471DC15286A0A4600BDCA18 /* FinalizePrices.swift in Sources */,
 				A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */,
 				A4107DBF286770C000385DFF /* DBController.swift in Sources */,
 				A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */,

@@ -41,7 +41,7 @@ struct PictureReceipt: View {
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-            NavigationLink(destination: AddUsers(username:username, prices: pricesManager1.prices), isActive: $pricesManager1.addUsers){EmptyView()}
+            NavigationLink(destination: FinalizePrices(username:username, prices: pricesManager1.prices), isActive: $pricesManager1.addUsers){EmptyView()}
             Button("Get Prices from photo"){
                 if (image.cgImage==nil){
                     print("Image can't be null")

@@ -44,9 +44,10 @@ func getPricesAsArray(image:UIImage){
                     let elementText = element.text
                     // let elementCornerPoints = element.cornerPoints
                     // let elementFrame = element.frame
-                    if let cost = Double(elementText) {
+                    if var cost = Double(elementText) {
                         print("The user entered a value price of \(cost)")
                         if (cost>0.0 && cost<300.0){//reasonable price range is in between 0 and 300 (arbitrary)
+                            cost =  Double(round(100*cost)/100)//round to 2 decimal spots
                             print("ADDED TO PRICES: \(cost)")
                             prices1.append(cost)
                         }
@@ -58,13 +59,12 @@ func getPricesAsArray(image:UIImage){
             }
             i+=1
         }
-        //gotPrices = true
         print("Done going through whole text")
         //print("Printing prices:")
-        for x in prices1 {
-            print(x)
-        }
-        print("PRICES NUMBER: \(prices1.count)")
+        //for x in prices1 {
+        //    print(x)
+        //}
+       // print("PRICES NUMBER: \(prices1.count)")
         pricesManager.prices = prices1
         pricesManager.addUsers = true
         print("Prices manager updated. Should switch to Add users view")

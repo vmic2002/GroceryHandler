@@ -93,9 +93,10 @@ struct SignedIn: View {
                             return
                         }
                         //if price is valid double
-                        var pr = 0.0
-                        if let p = Double(price) {
+                        var pr = 0.00//2 decimal places
+                        if var p = Double(price) {
                             //errMsg = "The user entered a value pr ice of \(p)"
+                            p = Double(round(100*p)/100)//round to 2 decimal spots
                             pr = p
                         } else {
                             errColor = Color.red
@@ -116,6 +117,10 @@ struct SignedIn: View {
                             
                        }
                         orderStr = temp
+                        if !(orderSummary.isEmpty){
+                            orderSummary = ""
+                            //to clear orderSummary if multiple orders are manually inputed and POSTED in a row
+                        }
                         user = ""
                         price = ""
                         users.removeAll()

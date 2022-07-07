@@ -82,7 +82,7 @@ struct ContentView: View {
                     }
                 }//.padding(.all, 20)
                 .multilineTextAlignment(.center)
-                .padding(.all,5)
+                .padding(.all,20)
                 .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.2)))
                 HStack{
                     Button("Create Account"){
