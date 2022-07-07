@@ -11,11 +11,9 @@ import SwiftUI
 struct PictureReceipt: View {
     @State var username:String
     @State private var image = UIImage()
-    @State private var showSheet = false
-    @State private var cameraOrLibrary = false//true for camera false for library->BUG that user is shown library no matter what button he presses if cameraOrLibrary==false, user is shown camera if cameraOrLibrary==true
-    //@State private var addUsers = false
+    @State private var library = false
+    @State private var camera = false
     @ObservedObject var pricesManager1:PricesManager = pricesManager
-   // @State private var prices = [Double]()
     
     var body: some View {
         VStack {
@@ -24,8 +22,8 @@ struct PictureReceipt: View {
                 .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
                 .multilineTextAlignment(.center)
             Button("Choose photo from library"){
-                cameraOrLibrary = false
-                showSheet = true
+                library = true
+                print("LIBRARY")
             }
             .multilineTextAlignment(.center)
             .padding(.all,5)
@@ -36,53 +34,34 @@ struct PictureReceipt: View {
                 .frame(width: 300, height: 400)
                 .background(Color.black.opacity(0.2))
                 .aspectRatio(contentMode: .fill)
-            //.clipShape(Circle())
-            
-            //Text("Take photo")
             Button("Take photo"){
-                cameraOrLibrary = true
-                showSheet = true
+                camera = true
+                print("CAMERA")
             }
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-            // .font(.headline)
-            //.frame(maxWidth: .infinity)
-            // .frame(height: 50)
-            //  .background(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.262745098, green: 0.0862745098, blue: 0.8588235294, alpha: 1)), Color(#colorLiteral(red: 0.5647058824, green: 0.462745098, blue: 0.9058823529, alpha: 1))]), startPoint: .top, endPoint: .bottom))
-            //  .cornerRadius(16)
-            //  .foregroundColor(.white)
-            //  .padding(.horizontal, 20)
-            // .onTapGesture {
-            //      cameraOrLibrary = true
-            //     showSheet = true
-            //  }
             NavigationLink(destination: AddUsers(username:username, prices: pricesManager1.prices), isActive: $pricesManager1.addUsers){EmptyView()}
-        
             Button("Get Prices from photo"){
+                if (image.cgImage==nil){
+                    print("Image can't be null")
+                    return
+                }
                 //ML HAPPENS HERE
-               getPricesAsArray(image: image)
+                getPricesAsArray(image: image)
             }
             .buttonStyle(CustomButton(color: Color(red: 0.6, green: 0.1, blue: 0.1)))
             .padding(.top, 20)
-            //.multilineTextAlignment(.center)
         }
         .frame(width: 350, height: 750)
         .padding(.horizontal, 20)
-        .sheet(isPresented: $showSheet) {
-            // Pick an image from the photo library:
-            
-            if (cameraOrLibrary){
-                ImagePicker(sourceType: .camera, selectedImage: self.$image)
-            } else {
-                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-            }
-            
-            
-            //  If you wish to take a photo from camera instead:
-            // ImagePicker(sourceType: .camera, selectedImage: self.$image)
-        }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
-        //.background(Color(red: 0.67, green: 0.87, blue: 0.9))
+        .background(Color(red: 0.67, green: 0.87, blue: 0.9))
+        .sheet(isPresented: $camera){
+            ImagePicker(sourceType: .camera, selectedImage: self.$image)
+        }
+        .sheet(isPresented: $library) {
+            ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+        }
     }
 }
 
