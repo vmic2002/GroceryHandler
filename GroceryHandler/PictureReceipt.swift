@@ -13,8 +13,9 @@ struct PictureReceipt: View {
     @State private var image = UIImage()
     @State private var showSheet = false
     @State private var cameraOrLibrary = false//true for camera false for library->BUG that user is shown library no matter what button he presses if cameraOrLibrary==false, user is shown camera if cameraOrLibrary==true
-    @State private var addUsers = false
-    @State private var prices = [Double]()
+    //@State private var addUsers = false
+    @ObservedObject var pricesManager1:PricesManager = pricesManager
+   // @State private var prices = [Double]()
     
     var body: some View {
         VStack {
@@ -56,13 +57,11 @@ struct PictureReceipt: View {
             //      cameraOrLibrary = true
             //     showSheet = true
             //  }
-            NavigationLink(destination: AddUsers(username:username, prices: prices), isActive: $addUsers){EmptyView()}
+            NavigationLink(destination: AddUsers(username:username, prices: pricesManager1.prices), isActive: $pricesManager1.addUsers){EmptyView()}
+        
             Button("Get Prices from photo"){
-              
-                //UNCOMMENT BECAUSE OF BUGS
-                //ML HAPPENDS HERE prices = getPrices(image:image)
-               
-                addUsers = true
+                //ML HAPPENS HERE
+               getPricesAsArray(image: image)
             }
             .buttonStyle(CustomButton(color: Color(red: 0.6, green: 0.1, blue: 0.1)))
             .padding(.top, 20)

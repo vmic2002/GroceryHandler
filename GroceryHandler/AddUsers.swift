@@ -18,9 +18,15 @@ struct AddUsers: View {
     var body: some View {
         VStack{
       
-           // Text("Hello, \(username)!")
-          //  Text("Size of prices = \(prices.count)")
+            Text("Hello, \(username)!")
+            Text("Size of prices = \(prices.count)")
             Text("Coming soon")
+            ForEach(0 ..< prices.count) { value in
+                Text("\(prices[value])")
+                 //Text(orders[value])
+                     .multilineTextAlignment(.center)
+                    
+            }
          
         }
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))

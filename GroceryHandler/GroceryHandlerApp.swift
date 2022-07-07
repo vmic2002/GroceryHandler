@@ -61,13 +61,6 @@ var localUserInfoDB = [String:UserInfo]()
 
 var pageState = ""//pageState is initialized as empty on purpose, see getAllOrdersForUserName
 
-var gotPrices = false
-var prices = [Double]()
-
-
-
-//var errorMessage:String = "Error message"
-
 let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
              "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
              "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",

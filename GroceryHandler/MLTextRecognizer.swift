@@ -12,36 +12,12 @@ import MLKitVision
 
 //code for this file is taken/copied from https://developers.google.com/ml-kit/vision/text-recognition/ios
 
-func getPrices(image:UIImage)->[Double]{
-    getPricesAsArray(image: image)
-    
-    while gotPrices==false{
-        Thread.sleep(forTimeInterval: 1)
-        print("still here")
-        //after while loop prices will be complete
-    }
-    print("got prices became true")
-    //print("there are \(prices.count) prices")
-    
-    var pricesCpy = [Double]()
-    for price in prices {
-        pricesCpy.append(price)
-    }
-    //reinitialize gotPrices and prices
-    gotPrices = false
-    prices = [Double]()
-    return pricesCpy
-}
 
 func getPricesAsArray(image:UIImage){
- 
-    //print("A")
+    var prices1 = [Double]()
     let textRecognizer = TextRecognizer.textRecognizer()
-    //print("B")
     let visionImage = VisionImage(image: image)
-    //print("C")
     visionImage.orientation = image.imageOrientation
-    //print("D")
     textRecognizer.process(visionImage) { result, error in
         guard error == nil, let result = result else {
             // Error handling
@@ -57,7 +33,7 @@ func getPricesAsArray(image:UIImage){
             //  let blockLanguages = block.recognizedLanguages
             // let blockCornerPoints = block.cornerPoints
             // let blockFrame = block.frame
-            print("Block \(i): \(blockText)")
+            print("Block \(i): ")//\(blockText)")
             for line in block.lines {
                 let lineText = line.text
                 // let lineLanguages = line.recognizedLanguages
@@ -72,7 +48,7 @@ func getPricesAsArray(image:UIImage){
                         print("The user entered a value price of \(cost)")
                         if (cost>0.0 && cost<300.0){//reasonable price range is in between 0 and 300 (arbitrary)
                             print("ADDED TO PRICES: \(cost)")
-                            prices.append(cost)
+                            prices1.append(cost)
                         }
                     } else {
                         print("Not a valid number: \(elementText)")
@@ -82,8 +58,16 @@ func getPricesAsArray(image:UIImage){
             }
             i+=1
         }
-        gotPrices = true
+        //gotPrices = true
         print("Done going through whole text")
+        //print("Printing prices:")
+        for x in prices1 {
+            print(x)
+        }
+        print("PRICES NUMBER: \(prices1.count)")
+        pricesManager.prices = prices1
+        pricesManager.addUsers = true
+        print("Prices manager updated. Should switch to Add users view")
     }
     print("Done with get prices as array method")
 
