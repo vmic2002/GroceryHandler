@@ -90,22 +90,12 @@ Click on the GroceryHandler.xcworkspace file and select Open
 Build the project and run the app. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) to run it on your personal device.
 
 ## How to connect to your own database in the app:
-If you would like to connect to your Astra DB from your app, follow these steps:
-Change the 
+If you would like to connect to your Astra DB from this app, change these [environment variables in XCode:](https://m25lazi.medium.com/environment-variables-in-xcode-a78e07d223ed#:~:text=Setting%20Environment%20Variables%20via%20Xcode,value%20pair%20in%20a%20run.)
 ```
-ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_APPLICATION_TOKEN
+ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN
 ```
-variables in the DBController.swift file in this function:
-```swift
-func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
- //...
-}
-```
-The httpMethods are “PUT”, “DELETE”, “POST”, “PATCH”, or “GET”
-The endUrl is of the form (depending on the httpMethod):
-```
-/namespaces/{namespace}/collections/{collection-id}
-```
+
+
 
 Now you should create your own collection using Swagger UI:
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
