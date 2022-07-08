@@ -97,19 +97,17 @@ func deleteAccount(userName:String, password:String){
     
     //now to delete all orders with this username
     
-    //IMPORTANT: once getAllOrdersForUserName gets all orders (not just 20) using page-state, code below can be replaced by:
-    //deleteOrdersForUserName(userName:userName)
     
-    //for now deleteOrdersForUserName deletes 20 max orders so we need the while loop to delete all
-    var db = getAllOrdersForUserName(userName: userName).localOrderDB
-    while (!(db.count==0)){
-        print("Deleting orders")
-        for (docID, _) in db {
-            deleteOrderRequest(docID: docID)
-        }
-        db = getAllOrdersForUserName(userName: userName).localOrderDB
-        //deleteOrdersForUserName(userName: userName)//deletes 20 accounts max`
-    }
+    deleteOrdersForUserName(userName:userName)
+    
+    
+   // let db = getAllOrdersForUserName(userName: userName).localOrderDB
+    
+  //  print("Deleting orders")
+   // for (docID, _) in db {
+   //     deleteOrderRequest(docID: docID)
+   // }
+    
     shared.errMsgColor = Color.green
     shared.errorMessage = "Account deleted successfully"
     
@@ -610,9 +608,9 @@ func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
      code for this function is taken/copied from : https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website
      */
     // print("start of httprequest method")
-   // let ASTRA_DB_ID = ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
-   // let ASTRA_DB_REGION = ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
-   // let token = ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
+    // let ASTRA_DB_ID = ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
+    // let ASTRA_DB_REGION = ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
+    // let token = ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
     
     //print("endURL is: "+endUrl)
     // print("https://"+ASTRA_DB_ID+"-"+ASTRA_DB_REGION+".apps.astra.datastax.com/api/rest/v2"+endUrl)
