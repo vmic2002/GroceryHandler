@@ -8,13 +8,11 @@
 import Foundation
 import SwiftUI
 
-
 class ErrorManager: ObservableObject {
     //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
     @Published var errorMessage: String = ""
     @Published var errMsgColor = Color.red
 }
-
 
 let shared = ErrorManager()
 
@@ -24,9 +22,7 @@ class PricesManager: ObservableObject {
     @Published var prices = [Double]()
 }
 
-
 let pricesManager = PricesManager()
-
 
 //returns true if user can sign in and false otherwise
 //is also used to check if user can change password
@@ -50,7 +46,6 @@ func signIn(userName:String, password:String)->Bool{
 func createAccount(userName:String, password:String){
     let userInfoDict = getUserInfoForUserName(userName: userName)
     if (userInfoDict.count>0){
-        // ContentView.setErrMsg("Cannot create account with username: \(userName) because one already exists.")
         shared.errMsgColor = Color.red
         shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
         print("Cannot create account with username: \(userName) because one already exists.")
@@ -61,64 +56,37 @@ func createAccount(userName:String, password:String){
     shared.errorMessage = "Account created successfully."
 }
 
-
 func deleteAccount(userName:String, password:String){
-    shared.errorMessage = "Deleting acount... Please wait"
-    //BUG!!
-    //change of errormessage not showing up in view because
-    //view gets updated once function is over
-    
+    print("Deleting acount... Please wait")
     //get user info and doc id from astra db
-    let localUserInfoDB = getUserInfoForUserName(userName: userName)
-    //returns dict of docID:UserInfo
+    let userInfoDB = getUserInfoForUserName(userName: userName)
+    //returns dict of [docID:UserInfo]
     //because doc id is needed to delete from db
-    //for loop DELETES USER INFO
-    //WHICH IS DELETING ACCOUNT
-    if (localUserInfoDB.count==0){
+    if (userInfoDB.count==0){
         shared.errMsgColor = Color.red
         shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
         print("Cannot delete account with username: \(userName) because none exists.")
         return
     }
-    
-    for (docID, userInfo) in localUserInfoDB {
-        if (userInfo.password==password){
-            deleteUserInfoRequest(docID: docID)
-        } else {
-            shared.errMsgColor = Color.red
-            shared.errorMessage = "Incorrect password. Cannot delete account."
-            print("Incorrect password. Cannot delete account.")
-            
-            return
-        }
-        //for loop should only iterate once because usernames should be unique
+    //userInfoDB[userInfoDB.startIndex].value -> a userInfo
+    //userInfoDB[userInfoDB.startIndex].key -> docID string
+    if (userInfoDB[userInfoDB.startIndex].value.password==password){
+        deleteUserInfoRequest(docID: userInfoDB[userInfoDB.startIndex].key)
+    } else {
+        shared.errMsgColor = Color.red
+        shared.errorMessage = "Incorrect password. Cannot delete account."
+        print("Incorrect password. Cannot delete account.")
+        return
     }
-    
-    
-    //now to delete all orders with this username
-    
-    
     deleteOrdersForUserName(userName:userName)
-    
-    
-   // let db = getAllOrdersForUserName(userName: userName).localOrderDB
-    
-  //  print("Deleting orders")
-   // for (docID, _) in db {
-   //     deleteOrderRequest(docID: docID)
-   // }
-    
     shared.errMsgColor = Color.green
     shared.errorMessage = "Account deleted successfully"
-    
 }
 
 func deleteOrdersForUserName(userName:String){
-    /*
-     get all orders for username and get all their DOC IDs
-     then go through each ID and delete
-     */
-    let localOrderDB = getAllOrdersForUserName(userName: userName).localOrderDB//to get doc ID because can only delete from database with doc ID (at least from what I know)
+    //get all orders for username and get all their DOC IDs
+    //then go through each ID and delete
+    let localOrderDB = getAllOrdersForUserName(userName: userName).localOrderDB//get doc ID because can only delete from database with doc ID
     for (docID, _) in localOrderDB {
         deleteOrderRequest(docID: docID)
     }
@@ -169,24 +137,22 @@ func populateOrdersDB(numNewOrders:Int){
     }
 }
 
-//get all UserInfo where username = something in real time
+//return dict of [docID:UserInfo] of size 1 if there exists a userInfo
+//for userName or of size 0 otherwise
 func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     getRequestUserInfo(userName:userName)
-    //userinfo isnt computed even after getRequestUserInfo is finished
-    //need while loop
+    //userInfo isn't fetched even after getRequestUserInfo is finished -> async call
+    //after while loop async func will be finished
     while gotUserInfo==false{
-        Thread.sleep(forTimeInterval: 1)
-        //after while loop orders will be complete
+        Thread.sleep(forTimeInterval: 0.001)
     }
-    print("there are \(localUserInfoDB.count) user infos with username: \(userName)")
-    
-    
+    //print("there are \(localUserInfoDB.count) user infos with username: \(userName)")
     var localUserInfoDBCpy = [String:UserInfo]()
-    for (docID, userInfo) in localUserInfoDB {
-        
-        localUserInfoDBCpy[docID] = UserInfo(userName: userInfo.userName, password: userInfo.password)
-        //for loop should iterate just once because usernames are unique
-        //structs are passed as copies
+    if (localUserInfoDB.count==1){
+        //there is a user info for userName
+        print("there is a user info for userName")
+        let userInf = localUserInfoDB[localUserInfoDB.startIndex].value
+        localUserInfoDBCpy[localUserInfoDB[localUserInfoDB.startIndex].key] = UserInfo(userName: userInf.userName, password: userInf.password)
     }
     //reinitialize gotOrders and orders and localOrderDB
     gotUserInfo = false
@@ -198,16 +164,9 @@ func getAllOrdersForUserNameAsString(userName:String)->(result:String, numOrders
     let pastOrders = getAllOrdersForUserName(userName: userName).orders
     var result = ""
     for order in pastOrders {
-        for item in order.receipt {
-            result += "Price: \(item.price) -- Users: "
-            for user in item.users {
-                result += "\(user) "
-            }
-            result+="\n"
-        }
-        result+="\n-----------------------\n"
+        result += getOrderAsString(order: order)
+        result += "\n"
     }
-    print("RESULTTTTT")
     print(result)
     return (result, pastOrders.count)
 }
@@ -226,25 +185,24 @@ func getOrderAsString(order:Order)->String{
 }
 
 /*
- get all orders where userName = something in real time
+ get all orders for userName
  so that a user can see all past orders
  */
 func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [String:Order]) {
-    var ordersCpy = [Order]()
-    var localOrderDBCpy = [String:Order]()
     getRequestOrders(userName:userName, maxNumOrders: 20)
-    //max number of orders to get back is 20 -> max num of docs that can be returned
-    //TO GET ALL ORDERS: do get request with page-size size 20
+    //max number of orders to fetch is 20 because page-size has to be <=20
+    //TO GET ALL ORDERS: get request with page-size=20
     //then get operation with page-state = val of page state from first get request
     
-    //orders isnt computed even after getRequestOrders is finished
+    //orders aren't fetched even after getRequestOrders is finished
+    //because of async call
     //need while loop
+    var ordersCpy = [Order]()
+    var localOrderDBCpy = [String:Order]()
     while gotOrders==false{
-        Thread.sleep(forTimeInterval: 1)
-        //after while loop orders will be complete
+        Thread.sleep(forTimeInterval: 0.001)
     }
     //print("there are \(orders.count) orders")
-    
     for (docID, order) in localOrderDB {
         if localOrderDBCpy[docID]==nil {//to prevent duplicate docs
             let o = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
@@ -260,16 +218,15 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
         return (ordersCpy, localOrderDBCpy)
     }
     while (!(pageState.isEmpty)){
-        //print("Pagestate is \(pageState)")
         let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20&page-state=\(pageState)"
         pageState = ""//re initialize pageState
         getRequest(orderOrUserInfo: true, str: str)
         while gotOrders==false{
-            Thread.sleep(forTimeInterval: 1)
+            Thread.sleep(forTimeInterval: 0.001)
         }
-        //   print("there are \(orders.count) orders")
+        //  print("there are \(orders.count) orders")
         for (docID, order) in localOrderDB {
-            if localOrderDBCpy[docID]==nil {
+            if localOrderDBCpy[docID]==nil {//to prevent duplicate docs
                 let o = Order(userName: order.userName, receipt: order.receipt, paid: order.paid, time: order.time)
                 ordersCpy.append(o)
                 localOrderDBCpy[docID] = o
@@ -282,26 +239,20 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
     }
     //dont need to reinitialize pageState to empty string because
     //if the while loop finished that means it is already empty
-    //print("OrdersCpy.count: \(ordersCpy.count) == localOrderDBCpy.count: \(localOrderDBCpy.count) should be TRUE")
     return (ordersCpy, localOrderDBCpy)
 }
 
 //orderOrUserInfo is true to perform order get request
 //and false to perform user info get request
-func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
+//(if database has more than two collections, use an enum instead of boolean)
+func getRequest(orderOrUserInfo:Bool, str:String){
     let request = httpRequest(httpMethod: "GET", endUrl: str)
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
-        if let error = error {
-            //shared.errorMessage = "error: \(error)"
-            
-            print (shared.errorMessage)
+        if error != nil {
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            //shared.errorMessage = "server error"
-            //COMMENTED line above because of bug:Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
-            print (shared.errorMessage)
             //print(response)
             return
         }
@@ -309,8 +260,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
            mimeType == "application/json",
            let data = data,
            var dataString = String(data: data, encoding: .utf8) {
-            //print("IMPORTANT LINE::::::::::::::::::::::::::")
-            // print ("got data: \(dataString)")
+            //print ("got data: \(dataString)")
             /*
              JSON data is of the form
              {“data”:
@@ -319,7 +269,7 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
              “docID”:Order
              }
              }
-             OR (if there are more docs than page-size or 20)
+             OR (if there are more docs than <page-size> or <20>)
              {"pageState":"JDZjN2Y5MGQ5LWYyZGItNGRkNS05Mzk3LTZiNDE5NzYzNGMwZQDwf_____B_____","data":{
              
              “docID”: Order,
@@ -327,53 +277,31 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
              }
              }
              */
-            //TO SOLVE PROBLEM FIND FIRST OCCURENCE OF DATA, PAGE STATE SHOULD ESSENTIALLY NEVER HAVE WORD DATA IN IT WOUKLD
-            //BE VERY UNLUCKY
-            
-            if (orderOrUserInfo==true){//no page state if looking for user info
-                
-                let y = 64//length of page-state
-                if (dataString[dataString.index(dataString.startIndex, offsetBy: 2)]=="p"){
-                    pageState = String(dataString[dataString.index(dataString.startIndex, offsetBy: 14)...dataString.index(dataString.startIndex, offsetBy: 14+y-1)])
-                }
+            //need to clean up/proccess dataString
+            let y = 64//length of page-state
+            //no page state if looking for user info
+            if (orderOrUserInfo==true && dataString[dataString.index(dataString.startIndex, offsetBy: 2)]=="p"){
+                pageState = String(dataString[dataString.index(dataString.startIndex, offsetBy: 14)...dataString.index(dataString.startIndex, offsetBy: 14+y-1)])
             }
-            
-            let str = "data"
-            var j = 0
-            var indx = dataString.startIndex//arbitrary
-            for i in 2..<dataString.count {
-                if (dataString[dataString.index(dataString.startIndex, offsetBy: i)]==str[str.index(str.startIndex, offsetBy: j)]){
-                    if (j<3){
-                        //i is incremented because of for loop
-                        j+=1
-                    } else {//if j==3 then str has been found in dataString
-                        //indx = i + 3
-                        indx = dataString.index(dataString.startIndex, offsetBy: i+3)
-                        break
-                    }
-                } else {
-                    if (!(j==0)) {
-                        j=0//if mismatch set j back to 0
-                    }
-                }
+            var indx = dataString.startIndex//arbitrary, val is changed in if/else statement
+            if (dataString[dataString.index(dataString.startIndex, offsetBy: 2)]=="p"){
+                //there is page state
+                indx = dataString.index(dataString.startIndex, offsetBy: 14+y-1+10)
+            } else {
+                //there is no page state
+                //length of {“data”: is 8
+                indx = dataString.index(dataString.startIndex, offsetBy: 8)
             }
-            //indx is at start of desired JSON string
-            
-            
-            //get substirng of dataString from indx to endIndex-1 (or remove last char after)
-            //DO THIS!!!!
             let x = dataString.startIndex..<indx
             dataString.removeSubrange(x)
             dataString.removeLast()//to remove last }
-            
-            // print("dataString should be nicely formatted now")
-            // print("dataString: \(dataString)")
+            //print("dataString: \(dataString)")
             /*
              by now dataString is of form:
              {
              “docID”: Order,
              “docID”:Order
-             }
+             } or {"docID":UserInfo}
              */
             //https://medium.com/@boguslaw.parol/decoding-dynamic-json-with-unknown-properties-names-and-changeable-values-with-swift-and-decodable-127e437e8000
             if (orderOrUserInfo==true){
@@ -381,70 +309,55 @@ func getRequest(orderOrUserInfo:DarwinBoolean, str:String){
                 if let jsonData = dataString.data(using: .utf8) {
                     let events = try? JSONDecoder().decode(Values.self, from: jsonData)
                     for (key, eventData) in events! {
-                        //event data should be an Order
-                        //key should be a docID
-                        // print("KEY: "+key + " NAME: " + eventData.payerName)
+                        //eventData is an Order
+                        //key is a docID
                         localOrderDB[key]=eventData
                         orders.append(eventData)
                     }
                     gotOrders = true
                 } else {
                     print("Could not convert to type Data")
-                    shared.errorMessage = "Error occured while fetching from database"
                 }
             } else {
                 typealias Values = [String: UserInfo]
                 if let jsonData = dataString.data(using: .utf8) {
                     let events = try? JSONDecoder().decode(Values.self, from: jsonData)
-                    for (key, eventData) in events! {
-                        //event data should be an UserInfo
-                        //key should be a docID
-                        // print("KEY: "+key + " NAME: " + eventData.payerName)
-                        localUserInfoDB[key]=eventData
-                        //localUserInfoDB is dictionary even though we only expect the number of entries to be at most one
-                        //since usernames are unique
+                    //if events!.count==1 -> there is user info for username
+                    //if events!.count==0 -> there is no user info for username
+                    if !(events!.count==0){
+                        //there is at least one user info (we are expecting only one)
+                        //events is dict of [String:UserInfo] -> [DocID:UserInfo]
+                        localUserInfoDB[events![events!.startIndex].key] = events![events!.startIndex].value
                     }
                     gotUserInfo = true
                 } else {
                     print("Could not convert to type Data")
-                    shared.errorMessage = "Error occured while fetching from database"
                 }
-                
             }
-            
         }
     }
     task.resume()
-    //print("end of get request method")
 }
 
-//can be used to know if a doc with a certain username exists
-//helps to know if account already exists
+//sets correct value to "localUserInfoDB"
 func getRequestUserInfo(userName:String){
     let str = "/namespaces/keyspacename1/collections/userInfo?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=1"
     getRequest(orderOrUserInfo: false, str: str)
 }
 
-//sets correct values to orders and localOrderDB vars
+//sets correct values to "orders" and "localOrderDB" vars
 func getRequestOrders(userName:String, maxNumOrders:Int){
     //param is username of person to retrieve all orders
-    //print("in get request method"+">> /namespaces/keyspacename1/collections/orders?where=\\{\"firstname\":\\{\"$eq\":\""+name+"\"\\}\\}")
-    // let str = "/namespaces/keyspacename1/collections/orders?where=\\{\"payerName\":\\{\"$eq\":\"\(name)\"\\}\\}"
     let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=\(maxNumOrders)"
-    //print("str is:"+str)
     getRequest(orderOrUserInfo: true, str: str)
-    
 }
 
 func setOrderStatusToPaid(docID:String){
-    print("in set status to paid function")
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(Paid(paid:true)) else {
-        return
-        //could not convert to type data
+        return//could not convert to type data
     }
-    
     let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/orders/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
@@ -459,11 +372,8 @@ func setOrderStatusToPaid(docID:String){
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-           // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
-            
             print ("got data: \(dataString)")
-            
             //dataString is of form:
             /*
              {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
@@ -474,22 +384,17 @@ func setOrderStatusToPaid(docID:String){
 }
 
 
-//this method is called in ChangePassword view, which means that the user has a valid username
-//and one userInfo
+//this method is called in ChangePassword view, which means that the user has a user info and already
+//inputed a correct password
 func changePassword(newPassword:String, userName:String){
     let dict = getUserInfoForUserName(userName: userName)
-    //  let userInfo = dict[dict.startIndex].value
     let docID = dict[dict.startIndex].key
-    //let newUserInfo = UserInfo(userName:userName, password: newPassword)
-    //print("USING PATCH")
     
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(Password(password: newPassword)) else {
-        return
-        //could not convert to type data
+        return//could not convert to type data
     }
-    
     let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
@@ -504,11 +409,8 @@ func changePassword(newPassword:String, userName:String){
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-           // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
-            
-            //print ("got data: \(dataString)")
-            
+            print ("got data: \(dataString)")
             //dataString is of form:
             /*
              {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
@@ -518,37 +420,27 @@ func changePassword(newPassword:String, userName:String){
     task.resume()
 }
 
-
-
 func postRequest(uploadData:Data, collection:String){
-    /*swagger UI link to use *post* a *document* using Document API:
-     https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/{namespace-id}/collections/{collection-id}
-     */
     let request = httpRequest(httpMethod: "POST", endUrl: "/namespaces/keyspacename1/collections/\(collection)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
-            shared.errorMessage = "error: \(error)"
             print ("error: \(error)")
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            shared.errorMessage = "server error"
             print ("server error")
             return
         }
         if let mimeType = response.mimeType,
            mimeType == "application/json",
            let data = data,
-           // let _ = String(data: data, encoding: .utf8) {
            let dataString = String(data: data, encoding: .utf8) {
-            print("POST to \(collection) successful")
+            //print("POST to \(collection) successful")
             if (collection.elementsEqual("userInfo")){
-                //shared.errorMessage = "Account created successfully"
                 print("Account created successfully")
             }
             print ("got data: \(dataString)")
-            
             //dataString is of form:
             /*
              {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
@@ -556,34 +448,27 @@ func postRequest(uploadData:Data, collection:String){
         }
     }
     task.resume()
-    //print("end of post request method")
 }
 
-//creates account for user with userInfo
+//posts a userInfo to db
 func postRequest(userInfo:UserInfo){
-    //print("in post request method")
-    //to turn userInfo into JSON
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(userInfo) else {
         return
         //could not convert to type data
     }
-    // print("Here is JSON uploadData:")
-    //print(String(data: uploadData, encoding: .utf8)!)
     postRequest(uploadData: uploadData, collection: "userInfo")
 }
 
+//posts an order to db
 func postRequest(order:Order){
-    //print("in post request method")
-    //to turn order into JSON
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(order) else {
         return
         //could not convert to type data
     }
-    // print("Here is JSON uploadData:")
     postRequest(uploadData: uploadData, collection: "orders")
 }
 
@@ -602,33 +487,18 @@ func getOrdersWhereTotalIs(total:Double, userName:String)->[Order]{
     return result
 }
 
-
 func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
-    /*
-     code for this function is taken/copied from : https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website
-     */
-    // print("start of httprequest method")
-    // let ASTRA_DB_ID = ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
-    // let ASTRA_DB_REGION = ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
-    // let token = ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
-    
-    //print("endURL is: "+endUrl)
-    // print("https://"+ASTRA_DB_ID+"-"+ASTRA_DB_REGION+".apps.astra.datastax.com/api/rest/v2"+endUrl)
+    /*code for this function is taken/copied from : https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website*/
     let str = "https://"+ASTRA_DB_ID!+"-"+ASTRA_DB_REGION!+".apps.astra.datastax.com/api/rest/v2"+endUrl
-    //let url = URL(string: str)!
     let encodedStr = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-    // print("encodedStr = \(encodedStr)")
-    
-    let url = URL.init(string:encodedStr)! //"https://"+ASTRA_DB_ID+"-"+ASTRA_DB_REGION+".apps.astra.datastax.com/api/rest/v2/namespaces/keyspacename1/collections/orders")!
-    
+    let url = URL.init(string:encodedStr)!
     var request = URLRequest(url: url)
-    request.httpMethod = httpMethod//"POST" or "GET
+    request.httpMethod = httpMethod//"POST", "GET", etc
     if (httpMethod=="POST"){
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     request.setValue("application/json", forHTTPHeaderField: "accept")
     request.setValue(ASTRA_DB_TOKEN!, forHTTPHeaderField: "X-Cassandra-Token")
-    // print("end of httprequest method")
     return request
 }
 
@@ -644,19 +514,14 @@ func deleteRequest(docID:String, collectionID:String){
     let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/keyspacename1/collections/\(collectionID)/\(docID)")
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
         if let error = error {
-            shared.errorMessage = "error: \(error)"
             print ("error: \(error)")
             return
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            shared.errorMessage = "server error"
             print ("server error")
             return
         }
-        //shared.errorMessage = "Account deleted successfully"
-        //comment line above because of bug: Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
     }
     task.resume()
-    //print("end of delete doc function")
 }

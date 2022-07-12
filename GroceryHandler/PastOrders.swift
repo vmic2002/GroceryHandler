@@ -17,7 +17,6 @@ struct PastOrders: View {
          //could only get orders that arent paid, or only orders that have been paid using order.paid
          //dont need orders to be @state var because its value wont change in this view
          //if user goes back to signed in and posts an order when he comes back the getallorders fun will be called again so this page will be updated
-         
         //let orders = ["Hello", "World", "List", "Of", "Strings", "Here", "Is", "another"]
        
         VStack{

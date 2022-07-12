@@ -29,7 +29,7 @@ func getPricesAsArray(image:UIImage){
         //let resultText = result.text
         var i = 0
         for block in result.blocks {
-            let blockText = block.text
+           // let blockText = block.text
             //  let blockLanguages = block.recognizedLanguages
             // let blockCornerPoints = block.cornerPoints
             // let blockFrame = block.frame

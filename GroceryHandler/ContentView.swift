@@ -129,13 +129,16 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    // Button("DEV"){
-                    
+                     Button("DEV"){
+                         print("DEV")
+                         populateOrdersDB(numNewOrders: 500)
+                       //  print(getAllOrdersForUserNameAsString(userName:"Gabe1").result)
                     //  let currDate = Date()
                     //    print(currDate.formatted())
                         // populateOrdersDB(numNewOrders: 100)
-                    // }
-                     // .padding(.all, 20)
+                    }
+                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                     .padding(.all, 20)
                     //   Button("Populate 100"){
                     //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                     //populateUserInfoDB()

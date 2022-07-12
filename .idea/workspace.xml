@@ -7,6 +7,10 @@
     <list default="true" id="b03aa6c0-97a2-4fea-95d9-bfd83c07944b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GroceryHandler.xcworkspace/xcuserdata/victor.micha.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/GroceryHandler.xcworkspace/xcuserdata/victor.micha.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GroceryHandler/ContentView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/GroceryHandler/ContentView.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GroceryHandler/DBController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/GroceryHandler/DBController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GroceryHandler/GroceryHandlerApp.swift" beforeDir="false" afterPath="$PROJECT_DIR$/GroceryHandler/GroceryHandlerApp.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GroceryHandler/SignedIn.swift" beforeDir="false" afterPath="$PROJECT_DIR$/GroceryHandler/SignedIn.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

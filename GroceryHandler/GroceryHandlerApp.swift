@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-import simd
+//import simd
 //import MLKitTextRecognition
 
 import AVFoundation
@@ -72,6 +72,9 @@ var gotUserInfo = false
 var localUserInfoDB = [String:UserInfo]()
 
 var pageState = ""//pageState is initialized as empty on purpose, see getAllOrdersForUserName
+
+let dateFormatter = DateFormatter()
+
 
 let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
              "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
@@ -190,6 +193,7 @@ func getRandomOrder(userNames:[String])->Order{
     //userNames shoudl be list of DISTINCT strings
     //example:["Arthur2", "Marie123", "Victor12"]
     //one of these will be the user who pays
+    dateFormatter.dateFormat = "M/d/y, HH:mm:ss"//"YY/MM/dd"
     let payerNameIndex = Int.random(in: 0..<userNames.count)
     var receipt = [Item]()
     let numItems = Int.random(in: 2...15)//2...15 is arbitrary and small for testing, could make much bigger though
@@ -214,7 +218,9 @@ func getRandomOrder(userNames:[String])->Order{
         let item = Item(price: priceRounded, users: users)//0.5...50.0 is arbitrary
         receipt.append(item)
     }
-    let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:Date().formatted())
+   // let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:Date().formatted())
+    let date = Date()
+    let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:dateFormatter.string(from:date))
     return order
 }
 

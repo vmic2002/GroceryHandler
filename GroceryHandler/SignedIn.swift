@@ -181,7 +181,11 @@ struct SignedIn: View {
                     orderStr = ""
                     return
                 }
-                let order = Order(userName: username, receipt: items, paid: false, time: Date().formatted())
+                dateFormatter.dateFormat = "M/d/y, HH:mm:ss"//"YY/MM/dd"
+                let date = Date()
+                let order = Order(userName: username, receipt: items, paid: false, time:dateFormatter.string(from:date))
+                
+               // let order = Order(userName: username, receipt: items, paid: false, time: Date().formatted())
                 //Date().formatted() : 6/27/2022, 1:44 PM
                 postRequest(order: order)
                 errColor = Color.green
