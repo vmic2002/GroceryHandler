@@ -153,6 +153,7 @@ struct Item : Codable {
 
 
 The *Codable* makes it so that instances of these structs can be converted to JSON data objects, which is needed to post them to the database.
+To be explicitly clear, an *Order* is posted to the collection *orders* and a *UserInfo* is posted to the collection *userInfo*.
 
 ## Additional Information
 
