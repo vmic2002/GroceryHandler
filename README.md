@@ -102,7 +102,10 @@ If you would like to connect to your Astra DB from this app, you will need to ch
 ```
 ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN
 ```
-First, click on *Edit Scheme...*
+The *ASTRA_DB_ID* can be found in the dashboard of the astra website:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%204.17.34%20PM.png)
+
+To change the values of the environment variables in XCode, first click on *Edit Scheme...*
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.25.48%20AM.png)
 
 This will open the following window in which you can change the values of the environment variables:
@@ -117,7 +120,7 @@ Now you should create your own collection using Swagger UI:
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
 
 You can access Swagger UI from the Astra website:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.56.45%20AM.png)
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%204.39.36%20PM.png)
 
 To create an empty collection named *newCol* in *keyspacename1* for example:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.48.09%20AM.png)
