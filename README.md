@@ -90,11 +90,19 @@ Click on the GroceryHandler.xcworkspace file and select Open
 Build the project and run the app. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) to run it on your personal device.
 
 ## How to connect to your own database in the app:
-If you would like to connect to your Astra DB from this app, change these [environment variables in XCode:](https://m25lazi.medium.com/environment-variables-in-xcode-a78e07d223ed#:~:text=Setting%20Environment%20Variables%20via%20Xcode,value%20pair%20in%20a%20run.)
+If you would like to connect to your Astra DB from this app, change these environment variables in XCode:
 ```
 ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN
 ```
+First, click on *Edit Scheme...*
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.25.48%20AM)
 
+This will open the following window in which you can change the values of the environment variables:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.26.16%20AM)
+
+The app accesses the environment variables in the GroceryHandlerApp.swift file:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.27.00%20AM)
+XCode sets up the environment variables, which means that the app can only be run from XCode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
 
 
 Now you should create your own collection using Swagger UI:
