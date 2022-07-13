@@ -112,7 +112,18 @@ This will open the following window in which you can change the values of the en
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.26.16%20AM.png)
 
 The app accesses the environment variables in the *GroceryHandlerApp.swift* file:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.27.00%20AM.png)
+```swift
+//environment variables https://blog.eidinger.info/use-environment-variables-from-env-file-in-a-swift-package
+public var ASTRA_DB_ID:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
+}
+public var ASTRA_DB_REGION:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_REGION"]
+}
+public var ASTRA_DB_TOKEN:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
+}
+```
 XCode sets up the environment variables, which means that the app can only be run from XCode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
 
 
