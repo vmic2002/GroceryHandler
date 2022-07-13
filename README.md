@@ -108,6 +108,9 @@ XCode sets up the environment variables, which means that the app can only be ru
 Now you should create your own collection using Swagger UI:
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
 
+You can access Swagger UI from the Astra website:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.56.45%20AM.png)
+
 To create an empty collection named *newCol*:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.48.09%20AM.png)
 
