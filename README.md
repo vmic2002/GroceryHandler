@@ -136,7 +136,7 @@ You can access Swagger UI from the Astra website:
 To create an empty collection named *newCol* in *keyspacename1* for example:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.48.09%20AM.png)
 
-The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *keyspacename1*. For your app to connect to your database, make sure to change using search and replace (in the *DBController.swift* file) the *userInfo*, *orders*, and *keyspacename1* to whatever you named them.
+The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *keyspacename1*. Make sure to change using search and replace (in the *DBController.swift* file) the *userInfo*, *orders*, and *keyspacename1* to whatever you named them.
 
 ### Creating your own model
 To customize your app, you will need to come up with a model of what the data will look like in the database.
