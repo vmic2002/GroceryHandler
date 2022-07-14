@@ -186,4 +186,4 @@ Make sure to do some research on HTTP requests, URLs, and JSON.
 Being familiar with cURL is always helpful.
 
 ### Interested in using the ML in your own app?
-[Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and/or look at the MLTextRecognizer.swift file
+[Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and/or look at the *MLTextRecognizer.swift* file
