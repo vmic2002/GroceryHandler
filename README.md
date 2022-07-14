@@ -95,7 +95,7 @@ Click on the *GroceryHandler.xcworkspace* file and select *Open*
 
 
 
-Build the project and run the app by clicking the big play button at the top left of the XCode window. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) to run it on your personal device.
+Build the project and run the app by clicking the big play button at the top left of the XCode window. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device.
 
 ## How to connect to your own database in the app:
 If you would like to connect to your Astra DB from this app, you will need to change these environment variables in XCode:
