@@ -10,7 +10,7 @@ Build an app in Swift that connects to the Datastax Astra Database. By replicati
 This sample app is coded in Swift and was developed on the XCode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, signing in, and changing password) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer.
 
 ## Prerequisites:
-1. [Create an Astra database account:](https://auth.cloud.datastax.com/auth/realms/CloudUsers/login-actions/registration?client_id=auth-proxy&tab_id=sbXNIWyPYDw&redirect_uri=https://astra.datastax.com/welcome).
+1. [Create an Astra database account:](https://auth.cloud.datastax.com/auth/realms/CloudUsers/login-actions/registration?client_id=auth-proxy&tab_id=sbXNIWyPYDw&redirect_uri=https://astra.datastax.com/welcome)
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.08.20%20AM.png)
 2. After verifying the account, click on *Create Database*:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.52.43%20AM.png)
@@ -95,7 +95,7 @@ Click on the *GroceryHandler.xcworkspace* file and select *Open*
 
 
 
-Build the project and run the app by clicking the big play button at the top left of the XCode window. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device.
+Build the project and run the app by clicking the big play button at the top left of the XCode window. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m). 
 
 ## How to connect to your own database in the app:
 If you would like to connect to your Astra DB from this app, you will need to change these environment variables in XCode:
