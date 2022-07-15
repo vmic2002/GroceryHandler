@@ -18,7 +18,7 @@ let shared = ErrorManager()
 
 class PricesManager: ObservableObject {
     //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
-    @Published var addUsers: Bool = false
+    @Published var getPrices: Bool = false
     @Published var prices = [Double]()
 }
 
@@ -150,7 +150,7 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     var localUserInfoDBCpy = [String:UserInfo]()
     if (localUserInfoDB.count==1){
         //there is a user info for userName
-        print("there is a user info for userName")
+        print("there is a user info for \(userName)")
         let userInf = localUserInfoDB[localUserInfoDB.startIndex].value
         localUserInfoDBCpy[localUserInfoDB[localUserInfoDB.startIndex].key] = UserInfo(userName: userInf.userName, password: userInf.password)
     }
@@ -253,7 +253,7 @@ func getRequest(orderOrUserInfo:Bool, str:String){
         }
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
-            //print(response)
+            print(response)
             return
         }
         if let mimeType = response.mimeType,
@@ -430,6 +430,7 @@ func postRequest(uploadData:Data, collection:String){
         guard let response = response as? HTTPURLResponse,
               (200...299).contains(response.statusCode) else {
             print ("server error")
+            print("Response: \(response!)")
             return
         }
         if let mimeType = response.mimeType,

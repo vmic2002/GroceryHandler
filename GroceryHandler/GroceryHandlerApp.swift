@@ -35,20 +35,16 @@ public var ASTRA_DB_TOKEN:String? {
 }
 
 
-struct Item : Codable {
-    
-    let price : Double
-    let users : [String]
-}
-
-
 struct Order : Codable {
     let userName : String
-   // let password : String
-    //let payerName : String -> use userName instead
     let receipt : [Item]
     var paid : Bool
     let time : String
+}
+
+struct Item : Codable {
+    let price : Double
+    let users : [String]
 }
 
 struct UserInfo : Codable {
@@ -249,7 +245,7 @@ func computeAmoundOwed(order:Order)->String{
     computeAmountOwed(order: order, dict: &dict)
     var result = ""
     for (key,value) in dict{
-        result+="\(key) owes \(value) to \(order.userName) \n"
+        result += String(format: "\(key) owes %.2f to \(order.userName)\n", value)
     }
     return result
 }
@@ -307,3 +303,27 @@ func printOrders(orders:[Order]){
     }
 }
 
+//to go back to ContentView view from AddUsers view
+//code taken/copied from https://stackoverflow.com/questions/57334455/how-can-i-pop-to-the-root-view-using-swiftui/59662275#59662275
+struct NavigationUtil {
+  static func popToRootView() {
+    findNavigationController(viewController: UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.rootViewController)?
+      .popToRootViewController(animated: true)
+  }
+
+  static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
+    guard let viewController = viewController else {
+      return nil
+    }
+
+    if let navigationController = viewController as? UINavigationController {
+      return navigationController
+    }
+
+    for childViewController in viewController.children {
+      return findNavigationController(viewController: childViewController)
+    }
+
+    return nil
+  }
+}

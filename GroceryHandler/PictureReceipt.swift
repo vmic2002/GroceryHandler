@@ -9,7 +9,7 @@ import SwiftUI
 
 //code for this view is taken/copied from https://designcode.io/swiftui-advanced-handbook-imagepicker
 struct PictureReceipt: View {
-    @State var username:String
+    @State var userName:String
     @State private var image = UIImage()
     @State private var library = false
     @State private var camera = false
@@ -17,7 +17,7 @@ struct PictureReceipt: View {
     
     var body: some View {
         VStack {
-            Text("Hey, \(username)")
+            Text("Hey, \(userName)")
                 .font(.title)
                 .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
                 .multilineTextAlignment(.center)
@@ -41,7 +41,8 @@ struct PictureReceipt: View {
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-            NavigationLink(destination: FinalizePrices(username:username, prices: pricesManager1.prices), isActive: $pricesManager1.addUsers){EmptyView()}
+            NavigationLink(destination: FinalizePrices(userName:userName, prices: pricesManager1.prices), isActive: $pricesManager1.getPrices){EmptyView()}
+            //pricesManager1.getPrices is set to true in getPricesAsArray func in MLTextRecognizer
             Button("Get Prices from photo"){
                 if (image.cgImage==nil){
                     print("Image can't be null")
@@ -67,6 +68,6 @@ struct PictureReceipt: View {
 
 struct PictureReceipt_Previews: PreviewProvider {
     static var previews: some View {
-        PictureReceipt(username:"userName")
+        PictureReceipt(userName:"userName")
     }
 }

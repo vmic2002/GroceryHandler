@@ -13,6 +13,7 @@
 		A4107DC1286770CB00385DFF /* PastOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4107DC0286770CB00385DFF /* PastOrders.swift */; };
 		A4107DC3286770D700385DFF /* SignedIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4107DC2286770D700385DFF /* SignedIn.swift */; };
 		A4107DC52867711F00385DFF /* Preview Content in Resources */ = {isa = PBXBuildFile; fileRef = A4107DC42867711F00385DFF /* Preview Content */; };
+		A46031DA2880BAEE00CE1470 /* AddUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46031D92880BAEE00CE1470 /* AddUsers.swift */; };
 		A464C30D2867740D002D2B74 /* GroceryHandlerTests in Resources */ = {isa = PBXBuildFile; fileRef = A464C30B2867740D002D2B74 /* GroceryHandlerTests */; };
 		A464C30E2867740D002D2B74 /* GroceryHandlerUITests in Resources */ = {isa = PBXBuildFile; fileRef = A464C30C2867740D002D2B74 /* GroceryHandlerUITests */; };
 		A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471DC10286A053800BDCA18 /* PictureReceipt.swift */; };
@@ -55,6 +56,7 @@
 		A4107DC0286770CB00385DFF /* PastOrders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastOrders.swift; sourceTree = "<group>"; };
 		A4107DC2286770D700385DFF /* SignedIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedIn.swift; sourceTree = "<group>"; };
 		A4107DC42867711F00385DFF /* Preview Content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Preview Content"; sourceTree = "<group>"; };
+		A46031D92880BAEE00CE1470 /* AddUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUsers.swift; sourceTree = "<group>"; };
 		A464C30B2867740D002D2B74 /* GroceryHandlerTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GroceryHandlerTests; sourceTree = "<group>"; };
 		A464C30C2867740D002D2B74 /* GroceryHandlerUITests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GroceryHandlerUITests; sourceTree = "<group>"; };
 		A471DC0D286A041500BDCA18 /* GroceryHandler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryHandler.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +154,7 @@
 				A471DC12286A06E300BDCA18 /* PictureReceiptHelper.swift */,
 				A4107DC2286770D700385DFF /* SignedIn.swift */,
 				A4A63C44285791D5001EE632 /* Assets.xcassets */,
+				A46031D92880BAEE00CE1470 /* AddUsers.swift */,
 			);
 			path = GroceryHandler;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 			files = (
 				A4107DC3286770D700385DFF /* SignedIn.swift in Sources */,
 				A471DC13286A06E300BDCA18 /* PictureReceiptHelper.swift in Sources */,
+				A46031DA2880BAEE00CE1470 /* AddUsers.swift in Sources */,
 				A4107DC1286770CB00385DFF /* PastOrders.swift in Sources */,
 				A471DC17286A0B2600BDCA18 /* MLTextRecognizer.swift in Sources */,
 				A4107DBD286770AE00385DFF /* ChangePassword.swift in Sources */,

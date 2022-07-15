@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct ChangePassword: View {
-    @State var username:String
+    @State var userName:String
     @State var errMsg = ""
     @State var newPassword:String = ""
     @State var errColor = Color.red
     var body: some View {
         VStack{
-            Text("Hey \(username)!")
+            Text("Hey \(userName)!")
                 .font(.title)
                 .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
                 .padding(.top, 70)
@@ -33,7 +33,7 @@ struct ChangePassword: View {
                         errMsg = "New password cannot be empty"
                         return
                     }
-                    changePassword(newPassword: newPassword, userName: username)
+                    changePassword(newPassword: newPassword, userName: userName)
                     errColor = Color.green
                     errMsg = "Password changed to \(newPassword)"
                     newPassword = ""
@@ -49,6 +49,6 @@ struct ChangePassword: View {
 
 struct ChangePassword_Previews: PreviewProvider {
     static var previews: some View {
-        ChangePassword(username:"userName")
+        ChangePassword(userName:"userName")
     }
 }

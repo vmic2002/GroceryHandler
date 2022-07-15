@@ -33,26 +33,26 @@ func getPricesAsArray(image:UIImage){
             //  let blockLanguages = block.recognizedLanguages
             // let blockCornerPoints = block.cornerPoints
             // let blockFrame = block.frame
-            print("Block \(i): ")//\(blockText)")
+            //print("Block \(i): ")//\(blockText)")
             for line in block.lines {
                 let lineText = line.text
                 // let lineLanguages = line.recognizedLanguages
                 // let lineCornerPoints = line.cornerPoints
                 // let lineFrame = line.frame
-                print("LineText: \(lineText)")
+                //print("LineText: \(lineText)")
                 for element in line.elements {
                     let elementText = element.text
                     // let elementCornerPoints = element.cornerPoints
                     // let elementFrame = element.frame
                     if var cost = Double(elementText) {
-                        print("The user entered a value price of \(cost)")
+                       // print("The user entered a value price of \(cost)")
                         if (cost>0.0 && cost<300.0){//reasonable price range is in between 0 and 300 (arbitrary)
                             cost =  Double(round(100*cost)/100)//round to 2 decimal spots
-                            print("ADDED TO PRICES: \(cost)")
+                            //print("ADDED TO PRICES: \(cost)")
                             prices1.append(cost)
                         }
                     } else {
-                        print("Not a valid number: \(elementText)")
+                        //print("Not a valid number: \(elementText)")
                     }
                     //print("ElementText: \(elementText)")
                 }
@@ -66,8 +66,8 @@ func getPricesAsArray(image:UIImage){
         //}
        // print("PRICES NUMBER: \(prices1.count)")
         pricesManager.prices = prices1
-        pricesManager.addUsers = true
-        print("Prices manager updated. Should switch to Add users view")
+        pricesManager.getPrices = true
+        //print("Prices manager updated. Should switch to Add users view")
     }
     print("Done with get prices as array method")
 

@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct PastOrders: View {
-    @State var username:String
+    @State var userName:String
     
     var body: some View {
-         let orders = getAllOrdersForUserName(userName: username).orders.sorted(by: {
+         let orders = getAllOrdersForUserName(userName: userName).orders.sorted(by: {
              $0.time.compare($1.time) == .orderedDescending//sorts so that newer orders are at the top
          })
          //could only get orders that arent paid, or only orders that have been paid using order.paid
@@ -20,7 +20,7 @@ struct PastOrders: View {
         //let orders = ["Hello", "World", "List", "Of", "Strings", "Here", "Is", "another"]
        
         VStack{
-            Text("\(orders.count) orders for \(username)")
+            Text("\(orders.count) orders for \(userName)")
                 .padding(.bottom, 40)
                 .font(.title)
                 .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
@@ -53,6 +53,6 @@ struct PastOrders: View {
 
 struct PastOrders_Previews: PreviewProvider {
     static var previews: some View {
-        PastOrders(username:"username")
+        PastOrders(userName:"userName")
     }
 }

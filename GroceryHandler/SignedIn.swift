@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SignedIn: View {
-    @State var username:String
+    @State var userName:String
     @State var items = [Item]()
     //  @State private var prices = Set<Double>()
     @State private var users = Set<String>()
@@ -22,12 +22,12 @@ struct SignedIn: View {
     @State private var pastOrders = false
     @State private var pictureReceipt = false
     var body: some View {
-        //Text("In Signed In VIEW \(username)")
+        //Text("In Signed In VIEW \(userName)")
         // NavigationView{
         
         VStack{
             
-            Text("Hello, \(username)")
+            Text("Hello, \(userName)")
                 .font(.title)
                 //.foregroundColor(Color.green)
                 .multilineTextAlignment(.center)
@@ -183,9 +183,9 @@ struct SignedIn: View {
                 }
                 dateFormatter.dateFormat = "M/d/y, HH:mm:ss"//"YY/MM/dd"
                 let date = Date()
-                let order = Order(userName: username, receipt: items, paid: false, time:dateFormatter.string(from:date))
+                let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
                 
-               // let order = Order(userName: username, receipt: items, paid: false, time: Date().formatted())
+               // let order = Order(userName: userName, receipt: items, paid: false, time: Date().formatted())
                 //Date().formatted() : 6/27/2022, 1:44 PM
                 postRequest(order: order)
                 errColor = Color.green
@@ -213,8 +213,8 @@ struct SignedIn: View {
             }
             .foregroundColor(Color.gray)
             .padding(.bottom, 5)
-            NavigationLink(destination: PictureReceipt(username:username), isActive: $pictureReceipt){EmptyView()}
-            NavigationLink(destination: PastOrders(username:username), isActive: $pastOrders){EmptyView()}
+            NavigationLink(destination: PictureReceipt(userName:userName), isActive: $pictureReceipt){EmptyView()}
+            NavigationLink(destination: PastOrders(userName:userName), isActive: $pastOrders){EmptyView()}
         }
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
@@ -222,6 +222,6 @@ struct SignedIn: View {
 
 struct SignedIn_Previews: PreviewProvider {
     static var previews: some View {
-        SignedIn(username:"userName")
+        SignedIn(userName:"userName")
     }
 }
