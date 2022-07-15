@@ -8,12 +8,6 @@
 
 import SwiftUI
 
-//import simd
-//import MLKitTextRecognition
-
-import AVFoundation
-//import ReplayKit
-
 @main
 struct GroceryHandlerApp: App {
     var body: some Scene {
@@ -33,7 +27,6 @@ public var ASTRA_DB_REGION:String? {
 public var ASTRA_DB_TOKEN:String? {
     ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
 }
-
 
 struct Order : Codable {
     let userName : String
@@ -60,8 +53,9 @@ struct Password: Codable{
     var password:String
 }
 
-var orders = [Order]()//has to be global because getRequest is async
-var gotOrders = false//same reason as above
+//these vars are global because getRequest func has async call
+var orders = [Order]()
+var gotOrders = false
 var localOrderDB = [String:Order]()
 
 var gotUserInfo = false
@@ -71,7 +65,7 @@ var pageState = ""//pageState is initialized as empty on purpose, see getAllOrde
 
 let dateFormatter = DateFormatter()
 
-
+//usernames for random orders to populate the database
 let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
              "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
              "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
@@ -111,44 +105,7 @@ struct CustomTextField: TextFieldStyle {
     
 }
 
-func buttonTapped(n:Int) -> String {
-    print("tapped")
-    //USED AS MAIN FUNCTION
-
-    //createAccount(userName: "Andy1", password: "itsdrewnow")
-    
-    //deleteAccount(userName: "Andy1")
-    //populateUserInfoDB()
-
-    //printUserInfoFor(userName: "Andy1")
-    
-  //  for name in userNames {
-    //    printUserInfoFor(userName: name)
-   // }
-    
-    //populateOrdersDB(numNewOrders: 200)
-    //deleteOrdersForUserName(userName: "Michael1", numOrders: 2)
-  //  let docID = "a4272914-74f0-4379-a60a-cc8a440a58a7"
-   // deleteOrderRequest(docID: "52dfd13c-0411-48c2-ab47-68bb09178e2a")
-    
-   // deleteOrdersForUserName(userName: "Michael1", numOrders:8)
-       //printAllOrdersFor(userName: "Michael1")
-    //  print(getSetOfNames())
-   // printAllOrdersFor(userName: "Michael1")
-    //populateOrdersDB(numNewOrders: 200)
-    // // print("Average is \(getAverageNumBytesOfDoc())")
-    //let order = Order(userName: "Andy1", receipt: [Item(price: 10, users: ["Andy1", "Michael1"])])
-   //var dict = [String:Double]()
-   // postRequest(order: order)
-  //  computeAmountOwed(order: order, dict: &dict)
-//computeAllOrdersFor(userName:"Andy1")
-    
-    //printAllOrdersFor(userName:"Victor")
-    //printOrders(orders: getOrdersWhereTotalIs(total: 510.045, userName: "Michael1"))
-    return "hi"
-}
-
-
+//to know average bytes of random order
 func getAverageNumBytesOfDoc()->Int{
     let numNewOrders = 50//arbitrary
     var sum = 0
@@ -161,15 +118,12 @@ func getAverageNumBytesOfDoc()->Int{
             //could not convert to type data
         }
         print(uploadData)
-        /// print(Int(uploadData.count))
         sum+=Int(uploadData.count)
-        //printOrder(order: order)
         
     }
     //print("Average is \(sum/numNewOrders)")
     return sum/numNewOrders
 }
-
 
 func getRandomSetOfUserNames()->Set<String>{
     let numUserNames = Int.random(in: 2..<userNames.count/3)
@@ -187,9 +141,8 @@ func getRandomSetOfUserNames()->Set<String>{
 func getRandomOrder(userNames:[String])->Order{
     //userNames has length of at least 2
     //userNames shoudl be list of DISTINCT strings
-    //example:["Arthur2", "Marie123", "Victor12"]
     //one of these will be the user who pays
-    dateFormatter.dateFormat = "M/d/y, HH:mm:ss"//"YY/MM/dd"
+    dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
     let payerNameIndex = Int.random(in: 0..<userNames.count)
     var receipt = [Item]()
     let numItems = Int.random(in: 2...15)//2...15 is arbitrary and small for testing, could make much bigger though
@@ -209,22 +162,20 @@ func getRandomOrder(userNames:[String])->Order{
         for i in setOfIndices{
             users.append(userNames[i])
         }
-        let price = Double.random(in: 0.5...50.0)
-        let priceRounded = round(price*1000)/1000
-        let item = Item(price: priceRounded, users: users)//0.5...50.0 is arbitrary
+        let price = Double.random(in: 0.5...50.0)//0.5...50.0 is arbitrary
+        let priceRounded = round(price*100)/100//round to 2 decimal places
+        let item = Item(price: priceRounded, users: users)
         receipt.append(item)
     }
-   // let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:Date().formatted())
     let date = Date()
     let order = Order(userName:userNames[payerNameIndex], receipt:receipt, paid: false, time:dateFormatter.string(from:date))
     return order
 }
 
-
 func printAllOrdersFor(userName:String){
     let orders1 = getAllOrdersForUserName(userName: userName).orders
-    print("there are \(orders1.count) orders")
     printOrders(orders: orders1)
+    print("there are \(orders1.count) orders")
 }
 
 func printUserInfoFor(userName:String){
@@ -233,10 +184,8 @@ func printUserInfoFor(userName:String){
         print("No account with username: \(userName)")
         return
     }
-    for (_,userInfo) in userInfoDict1 {
-        print("Username: \(userInfo.userName), Password: \(userInfo.password)")
-        //for loop should only iterate once because usernames are unique
-    }
+    let userInfo = userInfoDict1[userInfoDict1.startIndex].value
+    print("Username: \(userInfo.userName), Password: \(userInfo.password)")
 }
 
 //returns an order summary
@@ -255,12 +204,6 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
         print("Order.paid is true. No need to compute amount owed")
         return//only compute amount owed for orders that have not been paid
     }
-    //need dictionary of ["user":amountOwed]
-    //dont need to count for user that is payerName
-    //function could return dictionary
-    print("start of compute amount owed method")
-    //printOrder(order:order)
-    //var dict = [String:Double]()
     for item in order.receipt{
         let amount = Double(item.price)/Double(item.users.count)
         for user in item.users {
@@ -270,31 +213,25 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
                 if (dict[user]==nil){
                     dict[user]=0.0
                 }
-                dict[user]!+=Double(amount)//truncatetruncate
+                dict[user]!+=Double(amount)
             }
         }
     }
     //each user owes dict[user] to order.userName
-    //for (key,value) in dict{
-   //     print("\(key) owes \(value) to \(order.userName)")
-   // }
     print("end of compute amound owed method")
-    //  return dict
 }
 
 func printOrder(order:Order){
     print("Payer user name: \(order.userName)")
-    //print("Receipt: ")
+    print("Receipt: ")
     for item in order.receipt {
-        //print("item price: \(item.price)")
-        print("\(item.price)")
+        print("item price: \(item.price)")
         //print("User: ", terminator: "")
         // for user in item.users {//
         //     print("\(user) ", terminator: "")
         // }
         // print()
     }
-    
 }
 
 func printOrders(orders:[Order]){

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct ContentView: View {
     @State private var userName: String = ""
     @State private var password: String = ""
@@ -28,9 +26,6 @@ struct ContentView: View {
                     .frame(height: 70)
                 //COULD HAVE IMAGE OF LOGO HERE
                 Spacer()
-                //instead of spacer could put an image here
-                
-                // Form {
                 HStack{
                     TextField("Username: ", text: $userName)
                         .textFieldStyle(CustomTextField())
@@ -81,7 +76,6 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0.2, green: 0.5, blue: 0.2)))
-                    
                     Button("Delete Account"){
                         if (userName.count==0 || password.count==0){
                             shared.errMsgColor = Color.red
@@ -107,17 +101,13 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    // Button("DEV"){
-                      //   print("DEV")
-                        // populateOrdersDB(numNewOrders: 500)
-                       //  print(getAllOrdersForUserNameAsString(userName:"Gabe1").result)
-                    //  let currDate = Date()
-                    //    print(currDate.formatted())
-                        // populateOrdersDB(numNewOrders: 100)
-                    //}
-                     //.buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                     //.padding(.all, 20)
-                    //   Button("Populate 100"){
+                     Button("DEV"){
+                    //   print("DEV")
+                    // populateOrdersDB(numNewOrders: 500)
+                         printUserInfoFor(userName:"Andy1")
+                    }
+                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                    //.padding(.all, 20)
                     //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
                 }
                 Spacer()
