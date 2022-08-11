@@ -54,7 +54,7 @@ cd Desktop
 Clone the project by running:
 
 ```bash
-git clone https://github.com/vmic2002/GroceryHandler
+git clone https://github.com/vmic2002/GroceryHandler.git
 ```
 
 This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. 
