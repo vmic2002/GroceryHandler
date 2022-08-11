@@ -11,8 +11,8 @@ This sample app is coded in Swift and was developed on the Xcode IDE. It connect
 
 ## For beginners:
 
-If you are new to databases, [click here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#for-beginners-to-databases).
-If you are new to the Document API, [click here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#intro-to-document-api).
+If you are new to databases, [click here](https://github.com/vmic2002/GroceryHandler#for-beginners-to-databases).
+If you are new to the Document API, [click here](https://github.com/vmic2002/GroceryHandler#intro-to-document-api).
 
 ## Prerequisites:
 1. [Download Xcode](
@@ -39,7 +39,7 @@ It will take a while to download. While this is happening, move on to the next s
 
 ## How to replicate the project:
 
-See -> [Prerequisites first](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#prerequisites)
+See -> [Prerequisites first](https://github.com/vmic2002/GroceryHandler#prerequisites)
 
 Go to the directory where you would like your project to reside. If you are not sure what this means, open your Terminal app:
 
@@ -54,19 +54,19 @@ cd Desktop
 Clone the project by running:
 
 ```bash
-git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
+git clone https://github.com/vmic2002/GroceryHandler
 ```
 
 This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. 
 
-The Pods required for this are way too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#remove-pods-from-project).
+The Pods required for this are way too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/vmic2002/GroceryHandler#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/vmic2002/GroceryHandler#remove-pods-from-project).
 
 #### Integrate Pods in Project:
 
 1. In the same window, go to your project directory by running 
 
 ```bash
-cd workshop-IOS-Swift-Astra
+cd GroceryHandler
 ```
 
 2. To install CocoaPods, run (if a password is required, use the one you use to log in to your laptop):
@@ -87,7 +87,7 @@ Now the pods are installed and the project will build once opened on Xcode!
 1. After cloning the git repo, go to your project directory by running:
 
 ```bash
-cd workshop-IOS-Swift-Astra
+cd GroceryHandler
 ```
 
 2. Run these commands to remove the pods from the project (if a password is required, use the one you use to log in to your laptop):
@@ -116,7 +116,7 @@ prices = try await getPricesAsArray(image: image)
 
 3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in Xcode.
 
-4. To test the app, you will have to change the environment variables in Xcode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
+4. To test the app, you will have to change the environment variables in Xcode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/vmic2002/GroceryHandler#how-to-connect-to-your-own-database-in-the-app).
 
 5. Make sure that the app will run on the iPhone 13 Pro Simulator:
 ![](READMEPictures/Screen%20Shot%202022-07-19%20at%201.36.11%20PM.png)
