@@ -114,7 +114,7 @@ prices = try await getPricesAsArray(image: image)
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
 2. Click on the *GroceryHandler.xcworkspace* file and select *Open*
-![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
+![](READMEPictures/Screen%20Shot%202022-08-11%20at%204.00.29%20PM.png)
 
 3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in Xcode.
 
