@@ -1,9 +1,10 @@
 # Sample Swift IOS app using Datastax Astra's Document API
 
+### Official workshop repo:
+[https://github.com/datastaxdevs/workshop-IOS-Swift-Astra](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra)
+
 ### Contributor:
 [Victor Micha](https://github.com/vmic2002), Datastax Polaris Intern
-
-Official workshop repo: [https://github.com/datastaxdevs/workshop-IOS-Swift-Astra](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra)
 
 ### Objective:
 Build an app in Swift that connects to the Datastax Astra Database. By replicating this project, you will have an IOS app with fully functional backend and frontend.
